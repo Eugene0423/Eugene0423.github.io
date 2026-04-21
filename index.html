@@ -2,13 +2,17 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Eugene's Portofolia</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>My Portfolio</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;1,400&family=Jost:wght@300;400;500&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
   <header>
-    <h2>My Name</h2>
+    <div class="logo">My Name</div>
     <nav>
       <a href="#">Home</a>
       <a href="#">Projects</a>
@@ -17,15 +21,34 @@
   </header>
 
   <section class="hero">
-    <h1>Hello World!</h1>
-    <p>Currently, I am attempting to redesign my personal github, so you may find some parts empty/awkward</p>
+    <div class="hero-tag">Portfolio — 2026</div>
+    <h1>Hello, I'm a<br><em>Developer</em></h1>
+    <p class="hero-sub">I build simple and elegant web experiences. Focused on craft, warmth, and quiet detail.</p>
+    <div class="hero-divider"></div>
   </section>
 
   <section class="projects">
-    <h2>Projects</h2>
-    <div class="card">Project 1</div>
-    <div class="card">Project 2</div>
+    <div class="section-label">Selected Projects</div>
+    <div class="cards">
+      <div class="card">
+        <div class="card-num">01</div>
+        <div class="card-title">Project 1</div>
+        <p class="card-desc">A short description of what this project does and the tools used to build it.</p>
+        <span class="card-arrow">↗</span>
+      </div>
+      <div class="card">
+        <div class="card-num">02</div>
+        <div class="card-title">Project 2</div>
+        <p class="card-desc">A short description of what this project does and the tools used to build it.</p>
+        <span class="card-arrow">↗</span>
+      </div>
+    </div>
   </section>
+
+  <footer>
+    <span class="footer-text">Based in Atlanta, GA</span>
+    <a href="#" class="footer-cta">Get in touch ↗</a>
+  </footer>
 
 </body>
 </html>
