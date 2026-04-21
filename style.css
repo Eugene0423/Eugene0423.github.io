@@ -1,0 +1,43 @@
+body {
+  margin: 0;
+  font-family: 'Segoe UI', sans-serif;
+  background-color: #F8F5F0; /* ivory */
+  color: #3E2C23; /* espresso */
+}
+
+/* Navbar */
+header {
+  display: flex;
+  justify-content: space-between;
+  padding: 20px 40px;
+  background-color: #D6C3B3;
+}
+
+nav a {
+  margin-left: 20px;
+  text-decoration: none;
+  color: #3E2C23;
+}
+
+/* Hero */
+.hero {
+  text-align: center;
+  padding: 100px 20px;
+}
+
+.hero h1 {
+  font-size: 2.5rem;
+}
+
+/* Projects */
+.projects {
+  padding: 50px;
+}
+
+.card {
+  background-color: #fff;
+  border-radius: 12px;
+  padding: 20px;
+  margin: 10px 0;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+}
