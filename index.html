@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>My Portfolio</title>
+  <title>Sally Shin — Portfolio</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;1,400&family=Jost:wght@300;400;500&display=swap" rel="stylesheet">
@@ -11,48 +11,79 @@
 </head>
 <body>
 
-  <header>
-    <div class="logo">Sally Shin</div> <!--Maybe add a photo-->
-    <div class="name">Sally/Eugene Shin</div>
-    <nav>
-      <a href="#">Home</a>
-      <a href="#">Projects</a>
-      <a href="#">Contact</a>
-    </nav>
-  </header>
+  <div class="layout">
 
-  <section class="hero">
-    <div class="hero-tag">Portfolio — 2026</div>
-    <h1>Hello, I'm a<br><em>Developer</em></h1>
-    <p class="hero-sub">I build simple and elegant web experiences. Focused on craft, warmth, and quiet detail.</p>
-    <div class="hero-divider"></div>
-  </section>
+    <!-- Sidebar -->
+    <aside class="sidebar">
+      <div class="sidebar-inner">
+        <div class="sidebar-top">
+          <div class="avatar">SS</div>
+          <div class="logo">Sally Shin</div>
+          <p class="sidebar-name">Sally / Eugene Shin</p>
+          <p class="sidebar-tagline">I build simple and elegant web experiences.</p>
+        </div>
+        <nav>
+          <a href="#home">Home</a>
+          <a href="#projects">Projects</a>
+          <a href="#contact">Contact</a>
+        </nav>
+        <div class="sidebar-footer">
+          <a href="https://github.com/Eugene0423" target="_blank">GitHub</a>
+        </div>
+      </div>
+    </aside>
 
-  <section class="projects">
-    <div class="section-label">Projects</div>
-    <div class="cards">
-      <a href = "https://github.com/Eugene0423/forensic_basic" target="_blank" class="card">
-        <div class="card-title">Beginning Forensic</div>
-        <p class="card-desc">Beginning Level of Digital Forensic</p>
-        <span class="card-arrow">↗</span>
-      </a>
-      <a href = "https://github.com/Eugene0423/study_log" target="_blank" class="card">
-        <div class="card-title">Course Contents</div>
-        <p class="card-desc">Includes course assignments and projects done throughout undergraduate</p>
-        <span class="card-arrow">↗</span>
-      </a>
-      <a href = "https://github.com/BrandonKWLin/F.L.A.R.E." target="_blank" class="card">
-        <div class="card-title">F.L.A.R.E.</div>
-        <p class="card-desc">F.L.A.R.E. (Fire Location and AI Response Engine) uses NASA data and AI to broadcast wildfires like those in California—helping communities act early, save lives, and reduce healthcare burdens.</p>
-        <span class="card-arrow">↗</span>
-      </a>
-    </div>
-  </section>
+    <!-- Main content -->
+    <main class="main">
 
-  <footer>
-    <span class="footer-text">Based in Decatur, GA</span>
-    <a href="#" class="footer-cta">Get in touch ↗</a>
-  </footer>
+      <section class="hero" id="home">
+        <div class="hero-tag">Portfolio — 2026</div>
+        <h1>Hello, I'm a<br><em>Developer</em></h1>
+        <p class="hero-sub">I build simple and elegant web experiences. Focused on craft, warmth, and quiet detail.</p>
+        <div class="hero-divider"></div>
+      </section>
+
+      <section class="projects" id="projects">
+        <div class="section-label">Projects</div>
+        <div class="cards">
+
+          <a href="https://github.com/Eugene0423/forensic_basic" target="_blank" class="card">
+            <div class="card-num">01</div>
+            <div class="card-title">Beginning Forensic</div>
+            <p class="card-desc">Beginning level of Digital Forensic — exploring the fundamentals of forensic investigation and analysis.</p>
+            <span class="card-arrow">↗</span>
+          </a>
+
+          <a href="https://github.com/Eugene0423/study_log" target="_blank" class="card">
+            <div class="card-num">02</div>
+            <div class="card-title">Course Contents</div>
+            <p class="card-desc">Includes course assignments and projects done throughout undergraduate studies.</p>
+            <span class="card-arrow">↗</span>
+          </a>
+
+          <a href="https://github.com/BrandonKWLin/F.L.A.R.E." target="_blank" class="card">
+            <div class="card-num">03</div>
+            <div class="card-title">F.L.A.R.E.</div>
+            <p class="card-desc">Fire Location and AI Response Engine — uses NASA data and AI to broadcast wildfires like those in California, helping communities act early, save lives, and reduce healthcare burdens.</p>
+            <span class="card-arrow">↗</span>
+          </a>
+
+        </div>
+      </section>
+
+      <section class="contact" id="contact">
+        <div class="section-label">Contact</div>
+        <p class="contact-text">Have a project in mind or just want to say hello? Feel free to reach out.</p>
+        <a href="mailto:you@email.com" class="contact-link">you@email.com ↗</a>
+      </section>
+
+      <footer>
+        <span class="footer-text">Based in Decatur, GA</span>
+        <a href="#contact" class="footer-cta">Get in touch ↗</a>
+      </footer>
+
+    </main>
+  </div>
 
 </body>
 </html>
