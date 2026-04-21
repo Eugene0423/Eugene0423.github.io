@@ -1,43 +1,220 @@
-body {
+*, *::before, *::after {
+  box-sizing: border-box;
   margin: 0;
-  font-family: 'Segoe UI', sans-serif;
-  background-color: #F8F5F0; /* ivory */
-  color: #3E2C23; /* espresso */
+  padding: 0;
 }
 
-/* Navbar */
+/* ── Base ── */
+body {
+  font-family: 'Jost', sans-serif;
+  font-weight: 400;
+  background-color: #F5EFE6;
+  color: #3E2C23;
+  line-height: 1.7;
+}
+
+/* ── Header ── */
 header {
   display: flex;
   justify-content: space-between;
-  padding: 20px 40px;
-  background-color: #D6C3B3;
+  align-items: center;
+  padding: 1.25rem 2.5rem;
+  background-color: #EDE3D6;
+  border-bottom: 0.5px solid #C9B49A;
+  position: sticky;
+  top: 0;
+  z-index: 100;
 }
 
-nav a {
-  margin-left: 20px;
-  text-decoration: none;
+.logo {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 20px;
+  font-weight: 500;
+  letter-spacing: 0.03em;
   color: #3E2C23;
 }
 
-/* Hero */
+nav a {
+  text-decoration: none;
+  color: #7A5C44;
+  font-size: 13px;
+  font-weight: 400;
+  letter-spacing: 0.08em;
+  margin-left: 2rem;
+  transition: color 0.2s ease;
+}
+
+nav a:hover {
+  color: #3E2C23;
+}
+
+/* ── Hero ── */
 .hero {
-  text-align: center;
-  padding: 100px 20px;
+  padding: 5rem 2.5rem 4rem;
+  border-bottom: 0.5px solid #C9B49A;
+  max-width: 820px;
+}
+
+.hero-tag {
+  font-size: 11px;
+  letter-spacing: 0.18em;
+  color: #A07850;
+  text-transform: uppercase;
+  font-weight: 500;
+  margin-bottom: 1.25rem;
 }
 
 .hero h1 {
-  font-size: 2.5rem;
+  font-family: 'Cormorant Garamond', serif;
+  font-size: clamp(42px, 6vw, 68px);
+  font-weight: 400;
+  line-height: 1.1;
+  color: #3E2C23;
+  letter-spacing: -0.01em;
 }
 
-/* Projects */
+.hero h1 em {
+  font-style: italic;
+  color: #8B5E3C;
+}
+
+.hero-sub {
+  margin-top: 1.5rem;
+  font-size: 15px;
+  font-weight: 300;
+  color: #7A5C44;
+  line-height: 1.8;
+  max-width: 420px;
+}
+
+.hero-divider {
+  width: 40px;
+  height: 1px;
+  background-color: #C9B49A;
+  margin-top: 2.5rem;
+}
+
+/* ── Projects ── */
 .projects {
-  padding: 50px;
+  padding: 3.5rem 2.5rem;
+}
+
+.section-label {
+  font-size: 11px;
+  letter-spacing: 0.16em;
+  color: #A07850;
+  text-transform: uppercase;
+  font-weight: 500;
+  margin-bottom: 1.75rem;
+}
+
+.cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 16px;
 }
 
 .card {
-  background-color: #fff;
+  background-color: #EDE3D6;
+  border: 0.5px solid #C9B49A;
   border-radius: 12px;
-  padding: 20px;
-  margin: 10px 0;
-  box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+  padding: 1.75rem;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.card:hover {
+  background-color: #E4D5C3;
+}
+
+.card-num {
+  font-size: 11px;
+  letter-spacing: 0.12em;
+  color: #A07850;
+  font-weight: 500;
+  margin-bottom: 0.75rem;
+}
+
+.card-title {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 24px;
+  font-weight: 500;
+  color: #3E2C23;
+  margin-bottom: 0.5rem;
+}
+
+.card-desc {
+  font-size: 13px;
+  font-weight: 300;
+  color: #7A5C44;
+  line-height: 1.7;
+}
+
+.card-arrow {
+  display: inline-block;
+  margin-top: 1.25rem;
+  font-size: 16px;
+  color: #C9B49A;
+  transition: color 0.2s ease, transform 0.2s ease;
+}
+
+.card:hover .card-arrow {
+  color: #8B5E3C;
+  transform: translate(4px, -4px);
+}
+
+/* ── Footer ── */
+footer {
+  padding: 1.5rem 2.5rem;
+  background-color: #EDE3D6;
+  border-top: 0.5px solid #C9B49A;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.footer-text {
+  font-size: 12px;
+  color: #A07850;
+  font-weight: 300;
+  letter-spacing: 0.05em;
+}
+
+.footer-cta {
+  font-size: 12px;
+  font-weight: 500;
+  color: #8B5E3C;
+  letter-spacing: 0.08em;
+  text-decoration: none;
+  transition: color 0.2s ease;
+}
+
+.footer-cta:hover {
+  color: #3E2C23;
+}
+
+/* ── Responsive ── */
+@media (max-width: 600px) {
+  header {
+    padding: 1rem 1.25rem;
+  }
+
+  nav a {
+    margin-left: 1rem;
+  }
+
+  .hero {
+    padding: 3rem 1.25rem 2.5rem;
+  }
+
+  .projects {
+    padding: 2.5rem 1.25rem;
+  }
+
+  footer {
+    padding: 1.25rem;
+    flex-direction: column;
+    gap: 0.5rem;
+    text-align: center;
+  }
 }
