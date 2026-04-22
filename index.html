@@ -3,87 +3,135 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Sally Shin — Portfolio</title>
+  <title>My Portfolio</title>
+
+  <!-- Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;1,400&family=Jost:wght@300;400;500&display=swap" rel="stylesheet">
+
+  <!-- CSS -->
   <link rel="stylesheet" href="style.css">
+
+  <!-- Icons (Font Awesome) -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 </head>
+
 <body>
 
-  <div class="layout">
+  <!-- HEADER -->
+  <header>
+    <div class="logo">
+      <img src="Eugene_logo.png" alt="Sally Shin" class="logo-img">
+      <span>Sally/Eugene Shin</span>
+    </div>
 
-    <!-- Sidebar -->
-    <aside class="sidebar">
-      <div class="sidebar-inner">
-        <div class="sidebar-top">
-          <div class="avatar">SS</div>
-          <div class="logo">Sally Shin</div>
-          <p class="sidebar-name">Sally / Eugene Shin</p>
-          <p class="sidebar-tagline">I build simple and elegant web experiences.</p>
+    <nav>
+      <a href="#home">Home</a>
+      <a href="#projects">Projects</a>
+      <a href="#contact">Contact</a>
+    </nav>
+  </header>
+
+  <section id="home" class="hero">
+    <div class="hero-shape"></div>
+    <div class="hero-tag">Hello World!</div>
+    <h1>Hello, I'm <br><em>Eugene</em></h1>
+    <p class="hero-sub">
+      I build simple and elegant web experiences. Focused on craft, warmth, and quiet detail.
+    </p>
+    <div class="hero-divider"></div>
+  </section>
+
+  <!-- Bio -->
+    <section id = "bio" class = "bio">
+        <div class="section-label">About Me</div>
+        <p class="bio-sub1">
+            Hello World! I am Sally Shin, and I am an undergraduate student pursuing a joint major in mathematics and computer science—a combination that has allowed me to approach problem-solving from both theoretical and practical perspectives. Throughout my academic journey, I have discovered that my greatest passion lies at the intersection of rigorous analytical thinking and real-world technological applications, particularly in the realm of information security and data management.
+        </p>
+
+        <p class="bio-sub2">
+            Committed to advancing expertise in information security with a focus on large-scale data protection. Pursuing specialized knowledge to safeguard personal and organizational information assets through:
+        </p>
+        <div class="two-language">
+            <section class="bio-Planguage">
+                Programming Languages
+                <ul>
+                    <li> JavaScript</li>
+                    <li> Python</li>
+                    <li> C++</li>
+                    <li> HTML&CSS</li>
+                    <li> Linux</li>
+                </ul>
+            </section>
+
+            <section class="bio-Flanguage">
+                Languages
+                <ul>
+                    <li> English - Fluent</li>
+                    <li> Korean - Fluent</li>
+                    <li> Chinese - Intermediate</li>
+                </ul>
+            </section>
         </div>
-        <nav>
-          <a href="#home">Home</a>
-          <a href="#projects">Projects</a>
-          <a href="#contact">Contact</a>
-        </nav>
-        <div class="sidebar-footer">
-          <a href="https://github.com/Eugene0423" target="_blank">GitHub</a>
-        </div>
+   </section>
+
+  <section id="projects" class="projects">
+    <div class="section-label">Projects</div>
+
+    <div class="cards">
+      <a href="https://github.com/Eugene0423/forensic_basic" target="_blank" class="card">
+        <div class="card-title">Beginning Forensic</div>
+        <p class="card-desc">Beginning Level of Digital Forensic</p>
+        <span class="card-arrow">↗</span>
+      </a>
+
+      <a href="https://github.com/Eugene0423/study_log" target="_blank" class="card">
+        <div class="card-title">Course Contents</div>
+        <p class="card-desc">
+          Includes course assignments and projects done throughout undergraduate
+        </p>
+        <span class="card-arrow">↗</span>
+      </a>
+
+      <a href="https://github.com/BrandonKWLin/F.L.A.R.E." target="_blank" class="card">
+        <div class="card-title">F.L.A.R.E.</div>
+        <p class="card-desc">
+          F.L.A.R.E. uses NASA data and AI to detect wildfires early—helping communities act faster and save lives.
+        </p>
+        <span class="card-arrow">↗</span>
+      </a>
+
+      <div class="card">
+        <div class="card-title">More coming soon!</div>
       </div>
-    </aside>
+    </div>
+  </section>
 
-    <!-- Main content -->
-    <main class="main">
+  <!-- FOOTER / CONTACT -->
+  <footer>
+    <section id="contact" class="contact">
+      <span class="footer-text">Based in Decatur, GA</span>
 
-      <section class="hero" id="home">
-        <div class="hero-tag">Portfolio — 2026</div>
-        <h1>Hello, I'm a<br><em>Developer</em></h1>
-        <p class="hero-sub">I build simple and elegant web experiences. Focused on craft, warmth, and quiet detail.</p>
-        <div class="hero-divider"></div>
-      </section>
+      <a href="mailto:eugene.shin@emory.edu" class="footer-cta">
+        Get in touch ↗
+      </a>
 
-      <section class="projects" id="projects">
-        <div class="section-label">Projects</div>
-        <div class="cards">
+      <div class="contact-icons">
+        <a href="https://www.linkedin.com/in/sally-shin-aba652331" target="_blank" class="icon">
+          <i class="fab fa-linkedin-in"></i>
+        </a>
 
-          <a href="https://github.com/Eugene0423/forensic_basic" target="_blank" class="card">
-            <div class="card-num">01</div>
-            <div class="card-title">Beginning Forensic</div>
-            <p class="card-desc">Beginning level of Digital Forensic — exploring the fundamentals of forensic investigation and analysis.</p>
-            <span class="card-arrow">↗</span>
-          </a>
+        <a href="mailto:eugene.shin@emory.edu" class="icon">
+          <i class="fas fa-envelope"></i>
+        </a>
 
-          <a href="https://github.com/Eugene0423/study_log" target="_blank" class="card">
-            <div class="card-num">02</div>
-            <div class="card-title">Course Contents</div>
-            <p class="card-desc">Includes course assignments and projects done throughout undergraduate studies.</p>
-            <span class="card-arrow">↗</span>
-          </a>
-
-          <a href="https://github.com/BrandonKWLin/F.L.A.R.E." target="_blank" class="card">
-            <div class="card-num">03</div>
-            <div class="card-title">F.L.A.R.E.</div>
-            <p class="card-desc">Fire Location and AI Response Engine — uses NASA data and AI to broadcast wildfires like those in California, helping communities act early, save lives, and reduce healthcare burdens.</p>
-            <span class="card-arrow">↗</span>
-          </a>
-
-        </div>
-      </section>
-
-      <section class="contact" id="contact">
-        <div class="section-label">Contact</div>
-        <p class="contact-text">Have a project in mind or just want to say hello? Feel free to reach out.</p>
-        <a href="mailto:you@email.com" class="contact-link">you@email.com ↗</a>
-      </section>
-
-      <footer>
-        <span class="footer-text">Based in Decatur, GA</span>
-        <a href="#contact" class="footer-cta">Get in touch ↗</a>
-      </footer>
-
-    </main>
-  </div>
+        <a href="https://github.com/Eugene0423" target="_blank" class="icon">
+          <i class="fab fa-github"></i>
+        </a>
+      </div>
+    </section>
+  </footer>
 
 </body>
 </html>
