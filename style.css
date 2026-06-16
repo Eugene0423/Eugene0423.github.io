@@ -220,6 +220,63 @@ nav a:hover {
   transform: translate(4px, -4px);
 }
 
+/* Canvas */
+.image_canvas{
+  position: relative;
+  display: inline-block;
+  width: fit-content;
+}
+
+.image_canvas img{
+  display: block;
+  max-width: 50%;
+  height: auto;
+}
+
+.image_canvas canvas{
+  position: absolute;
+  left: 0;
+  top: 0;
+}
+
+@import "reset.css";
+.canvas{
+  width: 700px;
+  height: 700px;
+  background-color: white;
+  border-radius: 15px;
+  box-shadow: 0 4px 6px rgba(50, 50, 93, 0.11), 0 1px 3px rgba(0, 0, 0, 0.068);
+}
+
+.controls .controls__colors{
+  display: flex;
+}
+
+.controls__colors .control_color{
+  width: 50px;
+  height: 50px;
+  cursor: pointer;
+  box-shadow: 0 4px 6px rgba(50, 50, 93, 0.11), 0 1px 3px rgba(0, 0, 0, 0.068);
+}
+
+.color__picker {
+  appearance: none;
+  -webkit-appearance: none;
+  width: 50px;
+  height: 50px;
+  padding: 0;
+  overflow: hidden;
+  cursor: pointer;
+  box-shadow: 0 4px 6px rgba(50, 50, 93, 0.11), 0 1px 3px rgba(0, 0, 0, 0.068);
+}
+
+.color__picker::-webkit-color-swatch-wrapper {
+  padding: 0;
+}
+
+.color__picker::-webkit-color-swatch {
+  border: none;
+}
 /* ── Footer ── */
 footer {
   padding: 1.5rem 2.5rem;
@@ -347,3 +404,55 @@ footer {
 }
 
 }
+/**
+.bouncing-object {
+  position: fixed;
+  width: 55px;
+  height: 55px;
+  border-radius: 50%;
+  background: radial-gradient(circle at 30% 30%, #ffffff, #facc15 30%, #f97316 70%);
+  box-shadow: 0 0 25px rgba(249, 115, 22, 0.6);
+  z-index: 9999;
+  pointer-events: none;
+  animation: bounceScreen 6s linear infinite;
+}
+
+@keyframes bounceScreen {
+  0% {
+    left: 0;
+    top: 0;
+  }
+
+  25% {
+    left: calc(100vw - 55px);
+    top: 25vh;
+  }
+
+  50% {
+    left: calc(100vw - 55px);
+    top: calc(100vh - 55px);
+  }
+
+  75% {
+    left: 0;
+    top: 60vh;
+  }
+
+  100% {
+    left: 0;
+    top: 0;
+  }
+}
+
+.bouncing-object {
+  position: fixed;
+  width: 55px;
+  height: 55px;
+  border-radius: 50%;
+  background: radial-gradient(circle at 30% 30%, #ffffff, #facc15 30%, #f97316 70%);
+  box-shadow: 0 0 25px rgba(249, 115, 22, 0.6);
+  z-index: 9999;
+  cursor: pointer;
+  transform: translate(80px, 120px);
+}
+**/
