@@ -18,6 +18,8 @@
 </head>
 
 <body>
+  <!-- BOUNCING OBJECT -->
+  <!--<div class="bouncing-object" aria-hidden="true"></div>-->
 
   <!-- HEADER -->
   <header>
@@ -33,6 +35,7 @@
     </nav>
   </header>
 
+  <!-- Home -->
   <section id="home" class="hero">
     <div class="hero-shape"></div>
     <div class="hero-tag">Hello World!</div>
@@ -44,37 +47,37 @@
   </section>
 
   <!-- Bio -->
-    <section id = "bio" class = "bio">
-        <div class="section-label">About Me</div>
-        <p class="bio-sub1">
-            Hello World! I am Sally Shin, and I am an undergraduate student pursuing a joint major in mathematics and computer science—a combination that has allowed me to approach problem-solving from both theoretical and practical perspectives. Throughout my academic journey, I have discovered that my greatest passion lies at the intersection of rigorous analytical thinking and real-world technological applications, particularly in the realm of information security and data management.
-        </p>
+  <section id="bio" class="bio">
+    <div class="section-label">About Me</div>
+    <p class="bio-sub1">
+      Hello World! I am Sally Shin, and I am an undergraduate student pursuing a joint major in mathematics and computer science—a combination that has allowed me to approach problem-solving from both theoretical and practical perspectives. Throughout my academic journey, I have discovered that my greatest passion lies at the intersection of rigorous analytical thinking and real-world technological applications, particularly in the realm of information security and data management.
+    </p>
 
-        <p class="bio-sub2">
-            Committed to advancing expertise in information security with a focus on large-scale data protection. Pursuing specialized knowledge to safeguard personal and organizational information assets through:
-        </p>
-        <div class="two-language">
-            <section class="bio-Planguage">
-                Programming Languages
-                <ul>
-                    <li> JavaScript</li>
-                    <li> Python</li>
-                    <li> C++</li>
-                    <li> HTML&CSS</li>
-                    <li> Linux</li>
-                </ul>
-            </section>
+    <p class="bio-sub2">
+      Committed to advancing expertise in information security with a focus on large-scale data protection. Pursuing specialized knowledge to safeguard personal and organizational information assets through:
+    </p>
+    <div class="two-language">
+      <section class="bio-Planguage">
+        Programming Languages
+        <ul>
+          <li> JavaScript</li>
+          <li> Python</li>
+          <li> C++</li>
+          <li> HTML&CSS</li>
+          <li> Linux</li>
+        </ul>
+      </section>
 
-            <section class="bio-Flanguage">
-                Languages
-                <ul>
-                    <li> English - Fluent</li>
-                    <li> Korean - Fluent</li>
-                    <li> Chinese - Intermediate</li>
-                </ul>
-            </section>
-        </div>
-   </section>
+      <section class="bio-Flanguage">
+        Languages
+        <ul>
+          <li> English - Fluent</li>
+          <li> Korean - Fluent</li>
+          <li> Chinese - Intermediate</li>
+        </ul>
+      </section>
+    </div>
+  </section>
 
   <section id="projects" class="projects">
     <div class="section-label">Projects</div>
@@ -108,6 +111,150 @@
     </div>
   </section>
 
+  <div>
+    <canvas id="jsCanvas" class="canvas"></canvas>
+  </div>
+  <script>
+    const canvas = document.getElementById('jsCanvas')
+    const brush = canvas.getContext("2d");
+
+    const rect = canvas.getBoundingClientRect();
+    canvas.width = rect.width;
+    canvas.height = rect.height;
+
+    brush.lineWidth = "5";
+    brush.strokeStyle = "green";
+    brush.lineCap = "round";
+
+    let painting = false;
+
+    function startBrush(event){
+      painting = true;
+      brush.beginPath();
+      brush.moveTo(event.offsetX, event.offsetY)
+    }
+
+    function stopPainting() {
+      painting = false;
+    }
+
+    function draw(event) {
+      if (!painting) return;
+
+      if (currentTool === "pen") {
+        brush.globalAlpha = 1;
+        brush.lineWidth = currentBrushSize;
+        brush.lineCap = "round";
+        brush.globalCompositeOperation = "source-over";
+      }
+
+      if (currentTool === "pencil") {
+        brush.globalAlpha = 0.4;
+        brush.lineWidth = currentBrushSize;
+        brush.lineCap = "round";
+        brush.globalCompositeOperation = "source-over";
+      }
+
+      if (currentTool === "brush") {
+        brush.globalAlpha = 0.25;
+        brush.lineWidth = currentBrushSize;
+        brush.lineCap = "round";
+        brush.globalCompositeOperation = "source-over";
+      }
+
+      if(currentTool === "eraser"){
+        brush.globalAlpha = 1;
+        brush.lineWidth = currentBrushSize;
+        brush.globalCompositeOperation = "destination-out";
+      }
+
+      brush.lineTo(event.offsetX, event.offsetY);
+      brush.stroke();
+    }
+
+    canvas.addEventListener("mousedown", startBrush);
+    canvas.addEventListener("mouseup", stopPainting);
+    canvas.addEventListener("mouseleave", stopPainting);
+    canvas.addEventListener("mousemove", draw);  
+  </script>
+
+  <div class="controls">
+    <div class ="controls__colors" id="jsColors">
+        <div class="control_color" style="background-color: black;"></div>
+        <div class="control_color" style="background-color: white;"></div>
+        <div class="control_color" style="background-color: red;"></div>
+        <div class="control_color" style="background-color: orange;"></div>
+        <div class="control_color" style="background-color: yellow;"></div>
+        <div class="control_color" style="background-color: green;"></div>
+        <div class="control_color" style="background-color: blue;"></div>
+        <div class="control_color" style="background-color: navy;"></div>
+        <div class="control_color" style="background-color: purple;"></div>
+        <div class="control_color" style="background-color: violet;"></div>
+
+        <input class = "color__picker" type = "color" id = "colorPicker" value = "#008000">
+    </div>
+  </div>
+
+  <div class="controls__brush">
+    <label>
+      Brush size:
+      <input type = "range" id="brushSize" min="1" max="50" value="5">
+    </label>
+
+    <select id="brushStyle">
+      <option value="pen">Pen</option>
+      <option value="pencil">Pencil</option>
+      <option value="brush">Brush</option>
+      <option value="eraser">Eraser</option>
+    </select>
+  </div>
+
+
+  <script>
+    //change color
+    const colors = document.querySelectorAll(".control_color");
+    const colorPicker = document.getElementById("colorPicker");
+
+    function changeColor(event){
+      const selected = event.target.style.backgroundColor;
+      brush.strokeStyle = selected;
+    }
+
+    colors.forEach(color =>{
+      color.addEventListener("click", changeColor);
+    });
+
+    colorPicker.addEventListener("input", function(event){
+      brush.strokeStyle = event.target.value;
+    });
+
+    //change brush
+    let currentTool = "pen";
+    let currentBrushSize = 5;
+
+    const brushStyle = document.getElementById("brushStyle");
+    const brushSize = document.getElementById("brushSize");
+
+    brushStyle.addEventListener("change", function(event) {
+      currentTool = event.target.value;
+    });
+
+    brushSize.addEventListener("input", function(event){
+      currentBrushSize = Number(event.target.value);
+    })
+
+    document.getElementById("penTool").addEventListener("click", () => {
+      currentTool = "pen";
+    });
+
+    document.getElementById("pencilTool").addEventListener("click", () => {
+      currentTool = "pencil";
+    });
+
+    document.getElementById("brushTool").addEventListener("click", () => {
+      currentTool = "brush";
+    });
+  </script>
   <!-- FOOTER / CONTACT -->
   <footer>
     <section id="contact" class="contact">
@@ -133,5 +280,66 @@
     </section>
   </footer>
 
+  <!-------For the bouncing ball
+  <script>
+    const ball = document.querySelector('.bouncing-object');
+
+    const ballSize = 55;
+    let x = 80;
+    let y = 120;
+    let velocityX = 0;
+    let velocityY = 0;
+    let isMoving = false;
+
+    function placeBall() {
+      ball.style.transform = `translate(${x}px, ${y}px)`;
+    }
+
+    function startBall() {
+      if (isMoving) return;
+
+      isMoving = true;
+
+      // Billiards-style first push: diagonal movement, no gravity.
+      velocityX = 5;
+      velocityY = 3.5;
+
+      animateBall();
+    }
+
+    function animateBall() {
+  const screenWidth = window.innerWidth;
+  const screenHeight = window.innerHeight;
+  const maxX = screenWidth;
+  const maxY = screenHeight;
+
+  x += velocityX;
+  y += velocityY;
+
+  if (x <= 0 || x >= maxX) {
+    velocityX *= -1;
+  }
+
+  if (y <= 0 || y >= maxY) {
+    velocityY *= -1;
+  }
+
+  x = Math.max(0, Math.min(x, maxX));
+  y = Math.max(0, Math.min(y, maxY));
+
+  placeBall();
+
+  if (isMoving) {
+    requestAnimationFrame(animateBall);
+  }
+}
+
+    // The ball only starts after the mouse touches the ball.
+    ball.addEventListener('mouseenter', startBall);
+
+    placeBall();
+  </script>
+-->
 </body>
 </html>
+
