@@ -383,6 +383,13 @@
     deleteDoc
   } from "https://www.gstatic.com/firebasejs/12.15.0/firebase-firestore.js";
 
+  import {
+    getStorage,
+    ref,
+    uploadString,
+    getDownloadURL
+  } from "https://www.gstatic.com/firebasejs/12.15.0/firebase-storage.js";
+
   // For Firebase JS SDK v7.20.0 and later, measurementId is optional
   const firebaseConfig = {
     apiKey: "%VITE_FIREBASE_API_KEY%",
@@ -396,6 +403,7 @@
 
   const app = initializeApp(firebaseConfig);
   const db = getFirestore(app);
+  const storage = getStorage(app);
 
   const drawingCanvas = document.getElementById("jsCanvas");
   const memoInput = document.getElementById("memoInput");
@@ -423,6 +431,7 @@
   }
 
   async function createPost() {
+  try {
     const memo = memoInput.value.trim();
 
     if (memo === "") {
@@ -432,12 +441,19 @@
 
     const imageData = drawingCanvas.toDataURL("image/png");
 
+    const imagePath = `post-images/${Date.now()}.png`;
+    const imageRef = ref(storage, imagePath);
+
+    await uploadString(imageRef, imageData, "data_url");
+
+    const imageUrl = await getDownloadURL(imageRef);
+
     if (editingPostId) {
       const postRef = doc(db, "posts", editingPostId);
 
       await updateDoc(postRef, {
         memo: memo,
-        image: imageData,
+        imageUrl: imageUrl,
         updatedAt: serverTimestamp()
       });
 
@@ -446,14 +462,18 @@
     } else {
       await addDoc(collection(db, "posts"), {
         memo: memo,
-        image: imageData,
+        imageUrl: imageUrl,
         createdAt: serverTimestamp()
       });
     }
 
     memoInput.value = "";
     clearCanvas();
+  } catch (error) {
+    console.error("Post upload failed:", error);
+    alert(error.message);
   }
+}
 
   function showPosts() {
     const postsQuery = query(
@@ -472,8 +492,7 @@
         post.className = "post";
 
         const img = document.createElement("img");
-        img.src = data.image;
-
+        img.src = data.imageUrl;
         const memo = document.createElement("p");
         memo.textContent = data.memo;
 
@@ -495,7 +514,7 @@
           editingPostId = postId;
           memoInput.value = data.memo;
           postButton.textContent = "Update";
-          loadImageToCanvas(data.image);
+          loadImageToCanvas(data.imageUrl);
 
           window.scrollTo({
             top: drawingCanvas.offsetTop - 100,
