@@ -172,9 +172,17 @@
     const canvas = document.getElementById('jsCanvas')
     const brush = canvas.getContext("2d");
 
-    const rect = canvas.getBoundingClientRect();
-    canvas.width = rect.width;
-    canvas.height = rect.height;
+    function resizeCanvas() {
+      const rect = canvas.getBoundingClientRect();
+
+      canvas.width = rect.width;
+      canvas.height = rect.height;
+    }
+
+    resizeCanvas();
+
+    let lastX =0;
+    let lastY =0;
 
     brush.lineWidth = "5";
     brush.strokeStyle = "green";
@@ -182,14 +190,34 @@
 
     let painting = false;
 
+    function getCanvasPosition(event){
+      const rect = canvas.getBoundingClientRect();
+      const x = canvas.width/rect.width;
+      const y = canvas.height/rect.height;
+      
+      return{
+        x: (event.clientX - rect.left) * x,
+        y: (event.clientY - rect.top) * y
+      };
+    }
+
     function startBrush(event){
       painting = true;
+
+      const pos = getCanvasPosition(event);
+      
+      lastX = pos.x;
+      lastY = pos.y;
+
       brush.beginPath();
-      brush.moveTo(event.offsetX, event.offsetY)
+      brush.moveTo(lastX, lastY);
     }
 
     function stopPainting() {
+      if(!painting) return;
+
       painting = false;
+      brush.closePath();
     }
 
     function draw(event) {
@@ -222,8 +250,14 @@
         brush.globalCompositeOperation = "destination-out";
       }
 
-      brush.lineTo(event.offsetX, event.offsetY);
+      const midX = (lastX + pos.x) / 2;
+      const midY = (lastY + pos.y) / 2;
+
+      brush.quadraticCurveTo(lastX, lastY, midX, midY);
       brush.stroke();
+
+      lastX = pos.x;
+      lastY = pos.y;
     }
 
     canvas.addEventListener("mousedown", startBrush);
