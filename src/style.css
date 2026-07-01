@@ -276,7 +276,9 @@ nav a:hover {
 /* =========================
    Memo Drawing Section
 ========================= */
-
+.section-label {
+  grid-column: 1 / -1;
+}
 .memo-drawing-section {
   display: grid;
   grid-template-columns: minmax(0, 1.15fr) minmax(320px, 0.85fr);
