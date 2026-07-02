@@ -296,3 +296,68 @@ function showPosts() {
 postButton.addEventListener("click", createPost);
 
 showPosts();
+
+//for the visitor graph
+const visitorCanvas = document.getElementById("visitorChart");
+
+if (visitorCanvas && typeof Chart !== "undefined") {
+  new Chart(visitorCanvas, {
+    type: "line",
+    data: {
+      labels: ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"],
+      datasets: [
+        {
+          label: "Visitors",
+          data: [3, 5, 2, 8, 6, 10, 7],
+          tension: 0.3,
+          pointRadius: 3,
+        },
+      ],
+    },
+    options: {
+      responsive: true,
+      maintainAspectRatio: false,
+      plugins: {
+        legend: {
+          display: false,
+        },
+      },
+      scales: {
+        x: {
+          ticks: {
+            font: {
+              size: 10,
+            },
+          },
+        },
+        y: {
+          beginAtZero: true,
+          ticks: {
+            precision: 0,
+            font: {
+              size: 10,
+            },
+          },
+        },
+      },
+    },
+  });
+}
+
+const visitorFloating = document.querySelector(".visitor-floating");
+const visitorButton = document.querySelector(".visitor-circle");
+
+if (visitorFloating && visitorButton) {
+  visitorButton.addEventListener("click", (event) => {
+    event.stopPropagation();
+    visitorFloating.classList.toggle("is-open");
+  });
+
+  document.addEventListener("click", (event) => {
+    const clickedInsideVisitor = visitorFloating.contains(event.target);
+
+    if (!clickedInsideVisitor) {
+      visitorFloating.classList.remove("is-open");
+    }
+  });
+}

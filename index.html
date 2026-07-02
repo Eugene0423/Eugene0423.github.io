@@ -28,6 +28,7 @@
     <nav>
       <a href="#home">Home</a>
       <a href="#projects">Projects</a>
+      <a href="#Jinee">Jinee's Playground</a>
       <a href="#contact">Contact</a>
     </nav>
   </header>
@@ -108,8 +109,11 @@
     </div>
   </section>
 
+  <!-- Memo Drawing Section 
+  해야 하는거: 캔버스 위에 올렸을때 브러쉬 사이즈에 맞게 아이콘 변경 
+  -->
   <section class="memo-drawing-section">
-  <div class="section-label">Jinee's Playground</div>
+  <div class="section-label" id = "Jinee">Jinee's Playground</div>
   <div class="drawing-card">
     <div class="drawing-header">
       <p class="eyebrow">Interactive Board</p>
@@ -301,6 +305,30 @@
     })
 
   </script>
+
+  <!-- Visitor Graph
+  해야 하는거: 만약 버튼을 눌렀을시 유지되게 하는거 
+  -->
+  <div class="visitor-floating">
+  <button class="visitor-circle" aria-label="Show visitor chart">
+    #
+  </button>
+
+  <div class="visitor-popup">
+    <div class="visitor-popup-header">
+      <h3>Visitors</h3>
+      <span>Last 7 days</span>
+    </div>
+
+    <div class="visitor-chart-box">
+      <canvas id="visitorChart"></canvas>
+    </div>
+  </div>
+</div>
+
+
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
   <!-- FOOTER / CONTACT -->
   <footer>
     <section id="contact" class="contact">
@@ -325,67 +353,6 @@
       </div>
     </section>
   </footer>
-
-  <!-------For the bouncing ball
-  <script>
-    const ball = document.querySelector('.bouncing-object');
-
-    const ballSize = 55;
-    let x = 80;
-    let y = 120;
-    let velocityX = 0;
-    let velocityY = 0;
-    let isMoving = false;
-
-    function placeBall() {
-      ball.style.transform = `translate(${x}px, ${y}px)`;
-    }
-
-    function startBall() {
-      if (isMoving) return;
-
-      isMoving = true;
-
-      // Billiards-style first push: diagonal movement, no gravity.
-      velocityX = 5;
-      velocityY = 3.5;
-
-      animateBall();
-    }
-
-    function animateBall() {
-  const screenWidth = window.innerWidth;
-  const screenHeight = window.innerHeight;
-  const maxX = screenWidth;
-  const maxY = screenHeight;
-
-  x += velocityX;
-  y += velocityY;
-
-  if (x <= 0 || x >= maxX) {
-    velocityX *= -1;
-  }
-
-  if (y <= 0 || y >= maxY) {
-    velocityY *= -1;
-  }
-
-  x = Math.max(0, Math.min(x, maxX));
-  y = Math.max(0, Math.min(y, maxY));
-
-  placeBall();
-
-  if (isMoving) {
-    requestAnimationFrame(animateBall);
-  }
-}
-
-    // The ball only starts after the mouse touches the ball.
-    ball.addEventListener('mouseenter', startBall);
-
-    placeBall();
-  </script>
--->
 
 <!-- Firebase + Memo Board -->
 <script type="module" src="/src/main.js"></script>  
