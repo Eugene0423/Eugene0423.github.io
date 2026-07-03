@@ -430,10 +430,6 @@ nav a:hover {
   cursor: crosshair;
 }
 
-#jsCanvas.eraser-cursor{
-  cursor: url('eraser-cursor.png'), auto;
-}
-
 .canvas{
   cursor: crosshair;
 }

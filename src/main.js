@@ -308,6 +308,7 @@ if (visitorCanvas && typeof Chart !== "undefined") {
       datasets: [
         {
           label: "Visitors",
+          //변경하상: 진짜 userID에 따라 변화해야 함
           data: [3, 5, 2, 8, 6, 10, 7],
           tension: 0.3,
           pointRadius: 3,
