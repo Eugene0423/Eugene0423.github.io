@@ -12,7 +12,11 @@ import {
   orderBy,
   doc,
   updateDoc,
-  deleteDoc
+  deleteDoc,
+  getDocs,
+  increment,
+  limit,
+  setDoc,
 } from "https://www.gstatic.com/firebasejs/12.15.0/firebase-firestore.js";
 
 // Firebase config from .env
@@ -300,16 +304,63 @@ showPosts();
 //for the visitor graph
 const visitorCanvas = document.getElementById("visitorChart");
 
-if (visitorCanvas && typeof Chart !== "undefined") {
+function getTodayId() {
+  return new Date().toISOString().split("T")[0];
+}
+
+async function countTodayVisit() {
+  const today = getTodayId();
+  const visitKey = `visited-${today}`;
+
+  // 같은 브라우저에서 같은 날 새로고침할 때마다 카운트 올라가는 것 방지
+  if (localStorage.getItem(visitKey)) {
+    return;
+  }
+
+  const todayRef = doc(db, "visits", today);
+
+  await setDoc(
+    todayRef,
+    {
+      date: today,
+      count: increment(1),
+    },
+    { merge: true }
+  );
+
+  localStorage.setItem(visitKey, "true");
+}
+
+async function getVisitData() {
+  const visitsQuery = query(
+    collection(db, "visits"),
+    orderBy("date", "desc"),
+    limit(7)
+  );
+
+  const snapshot = await getDocs(visitsQuery);
+
+  const visits = snapshot.docs.map((doc) => doc.data());
+
+  // Firestore에서 desc로 가져왔으니까 그래프용으로 다시 오래된 날짜 → 최신 날짜 순서로 변경
+  // 잠시만, 근데 지금 이걸 하면 최신 날짜가 제일 아래로 가는 거 아냐? -> 이거 고칠 필요 있음
+  return visits.reverse();
+}
+
+function drawVisitorChart(visits) {
+  if (!visitorCanvas || typeof Chart === "undefined") return;
+
+  const labels = visits.map((item) => item.date);
+  const counts = visits.map((item) => item.count);
+
   new Chart(visitorCanvas, {
     type: "line",
     data: {
-      labels: ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"],
+      labels: labels,
       datasets: [
         {
           label: "Visitors",
-          //변경하상: 진짜 userID에 따라 변화해야 함
-          data: [3, 5, 2, 8, 6, 10, 7],
+          data: counts,
           tension: 0.3,
           pointRadius: 3,
         },
@@ -345,20 +396,16 @@ if (visitorCanvas && typeof Chart !== "undefined") {
   });
 }
 
-const visitorFloating = document.querySelector(".visitor-floating");
-const visitorButton = document.querySelector(".visitor-circle");
+async function initVisitorGraph() {
+  try {
+    await countTodayVisit();
 
-if (visitorFloating && visitorButton) {
-  visitorButton.addEventListener("click", (event) => {
-    event.stopPropagation();
-    visitorFloating.classList.toggle("is-open");
-  });
+    const visits = await getVisitData();
 
-  document.addEventListener("click", (event) => {
-    const clickedInsideVisitor = visitorFloating.contains(event.target);
-
-    if (!clickedInsideVisitor) {
-      visitorFloating.classList.remove("is-open");
-    }
-  });
+    drawVisitorChart(visits);
+  } catch (error) {
+    console.error("Visitor graph error:", error);
+  }
 }
+
+initVisitorGraph();

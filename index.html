@@ -265,10 +265,11 @@
       lastY = pos.y;
     }
 
-    canvas.addEventListener("mousedown", startBrush);
-    canvas.addEventListener("mouseup", stopPainting);
-    canvas.addEventListener("mouseleave", stopPainting);
-    canvas.addEventListener("mousemove", draw);  
+    canvas.addEventListener("pointerdown", startBrush);
+    canvas.addEventListener("pointerup", stopPainting);
+    canvas.addEventListener("pointerleave", stopPainting);
+    canvas.addEventListener("pointermove", draw);
+    canvas.addEventListener("pointercancel", stopPainting);
   </script>
 
   <script>
