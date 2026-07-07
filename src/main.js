@@ -17,6 +17,7 @@ import {
   increment,
   limit,
   setDoc,
+  getDoc,
 } from "https://www.gstatic.com/firebasejs/12.15.0/firebase-firestore.js";
 
 // Firebase config from .env
@@ -34,6 +35,23 @@ console.log("Firebase Project ID:", firebaseConfig.projectId);
 
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
+
+export {
+  db,
+  collection,
+  addDoc,
+  doc,
+  setDoc,
+  updateDoc,
+  increment,
+  serverTimestamp,
+  query,
+  orderBy,
+  limit,
+  onSnapshot,
+};
+
+//securityLogs
 
 // HTML elements
 const canvas = document.getElementById("jsCanvas");
@@ -308,27 +326,86 @@ function getTodayId() {
   return new Date().toISOString().split("T")[0];
 }
 
-async function countTodayVisit() {
-  const today = getTodayId();
-  const visitKey = `visited-${today}`;
+// 방문자 함수 근처에 sessionID 관련 내용물 추가
+// 넣는 이유: 같은 sessionID가 너무 빨리 count을 올리면 차단, securityLogs에 기록
+function getSessionId() {
+  let sessionId = localStorage.getItem("profile_session_id");
 
-  // 같은 브라우저에서 같은 날 새로고침할 때마다 카운트 올라가는 것 방지
-  if (localStorage.getItem(visitKey)) {
-    return;
+  if (!sessionId) {
+    sessionId = crypto.randomUUID();
+    localStorage.setItem("profile_session_id", sessionId);
   }
 
-  const todayRef = doc(db, "visits", today);
+  return sessionId;
+}
 
-  await setDoc(
-    todayRef,
-    {
+async function countTodayVisit() {
+  const sessionId = getSessionId();
+
+  console.log("Current session:", sessionId);
+
+  const today = getTodayId();
+  const now = Date.now();
+
+  const visitRef = doc(db, "visits", today);
+  const sessionRef = doc(db, "visitorSessions", sessionId);
+
+  const visitSnap = await getDoc(visitRef);
+
+  const VISIT_COOLDOWN = 1000 * 60; // 1 minute
+  const sessionSnap = await getDoc(sessionRef);
+
+  if (sessionSnap.exists()) {
+    const sessionData = sessionSnap.data();
+    const lastVisitAtMs = sessionData.lastVisitAtMs || 0;
+    const diffMs = now - lastVisitAtMs;
+
+    if (diffMs<VISIT_COOLDOWN){
+      console.warn("Repeated visit blocked:", diffMs);
+
+      await logSecurityEvent(
+        "VISIT_RATE_LIMIT",
+        "medium",
+        "Repeated visit blocked",
+        {
+          diffMs: diffMs,
+          cooldownMs: VISIT_COOLDOWN,
+        }
+      );
+
+      return;
+    }
+
+    await setDoc(sessionRef, {
+      sessionID: sessionId,
+      lastVisitAtMs: now,
+      lastVisitAt: serverTimestamp(),
+      visitCount: (sessionData.visitCount || 0) + 1,
+    });
+  } else {
+    await setDoc(sessionRef, {
+      sessionID: sessionId,
+      lastVisitAtMs: now,
+      lastVisitAt: serverTimestamp(),
+      visitCount: 1,
+    });
+  }
+
+  if (visitSnap.exists()) {
+    const currentCount = visitSnap.data().count || 0;
+
+    await setDoc(visitRef, {
       date: today,
-      count: increment(1),
-    },
-    { merge: true }
-  );
-
-  localStorage.setItem(visitKey, "true");
+      count: currentCount + 1,
+      updatedAt: serverTimestamp(),
+    });
+  } else {
+    await setDoc(visitRef, {
+      date: today,
+      count: 1,
+      updatedAt: serverTimestamp(),
+    });
+  }
 }
 
 async function getVisitData() {
@@ -394,6 +471,27 @@ function drawVisitorChart(visits) {
       },
     },
   });
+}
+
+// 보안 이벤트 로깅 -
+// 현재: 너무 빨리 새로고침하면 visits count 증가를 차단, securityLogs에 저장
+async function logSecurityEvent(type, severity, message, detail = {}){
+  try{
+    const sessionID = getSessionId();
+
+    await addDoc(collection(db, "securityLogs"), {
+      type: type,
+      severity: severity,
+      message: message,
+      sessionID: sessionID,
+      detail: detail,
+      createdAt: serverTimestamp(),
+      path: window.location.pathname,
+      userAgent: navigator.userAgent,
+    });
+  } catch (error) {
+    console.error("Error logging security event:", error);
+  }
 }
 
 async function initVisitorGraph() {
