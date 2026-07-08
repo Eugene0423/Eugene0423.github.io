@@ -25,6 +25,28 @@ html {
   scroll-behavior: smooth;
 }
 
+.site-nav {
+  display: flex;
+  gap: 24px;
+  padding: 24px 40px;
+  background: var(--bg-soft);
+  border-bottom: 1px solid var(--line);
+}
+
+.site-nav a {
+  text-decoration: none;
+  color: var(--accent-dark);
+  font-weight: 600;
+}
+
+.security-card {
+  background: var(--card);
+  border: 1px solid var(--line);
+  border-radius: 28px;
+  padding: 28px;
+  box-shadow: var(--shadow);
+}
+
 body {
   margin: 0;
   background: var(--bg);
@@ -433,6 +455,10 @@ nav a:hover {
 .canvas{
   cursor: crosshair;
 }
+
+.canvas{
+  touch-action: none;
+}
 /* =========================
    Board Posts
 ========================= */
@@ -495,6 +521,96 @@ nav a:hover {
   background: #f2e8dc;
   transform: translateY(-1px);
 }
+
+/*
+Security Events
+security.html - page design
+*/
+
+.security-page{
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 80px 24px;
+}
+
+.security-section {
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 80px 24px;
+  box-sizing: border-box;
+}
+
+.security-section h2 {
+  margin-bottom: 8px;
+}
+
+.security-description {
+  color: var(--text-soft);
+  margin-bottom: 24px;
+}
+
+.security-events {
+  display: grid;
+  gap: 16px;
+}
+
+.security-card {
+  background: var(--card);
+  border: 1px solid var(--line);
+  border-radius: 16px;
+  padding: 18px;
+  box-sizing: border-box;
+}
+
+.security-card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+}
+
+.security-type {
+  font-weight: 700;
+  font-size: 0.95rem;
+}
+
+.security-severity {
+  font-size: 0.75rem;
+  padding: 4px 10px;
+  border-radius: 999px;
+  border: 1px solid var(--line);
+  text-transform: uppercase;
+}
+
+.security-message {
+  margin: 10px 0;
+  color: var(--text);
+}
+
+.security-meta {
+  display: block;
+  color: var(--text-soft);
+  font-size: 0.8rem;
+  margin-top: 6px;
+}
+
+.security-card.high {
+  border-color: #ff6b6b;
+}
+
+.security-card.medium {
+  border-color: #f59f00;
+}
+
+.security-card.low {
+  border-color: #74c0fc;
+}
+
+.empty-security-message {
+  color: var(--text-soft);
+}
+
 /* ========================
   Visitor Post
 ===========================

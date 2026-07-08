@@ -113,7 +113,8 @@
   해야 하는거: 캔버스 위에 올렸을때 브러쉬 사이즈에 맞게 아이콘 변경 
   -->
   <section class="memo-drawing-section">
-  <div class="section-label" id = "Jinee">Jinee's Playground</div>
+  <div class="section-label" id="Jinee">Jinee's Playground</div>
+
   <div class="drawing-card">
     <div class="drawing-header">
       <p class="eyebrow">Interactive Board</p>
@@ -126,21 +127,19 @@
     <canvas id="jsCanvas" class="canvas"></canvas>
 
     <div class="tool-card">
-      <div class="controls">
-        <div class="controls__colors" id="jsColors">
-          <div class="control_color" style="background-color: black;"></div>
-          <div class="control_color" style="background-color: white;"></div>
-          <div class="control_color" style="background-color: red;"></div>
-          <div class="control_color" style="background-color: orange;"></div>
-          <div class="control_color" style="background-color: yellow;"></div>
-          <div class="control_color" style="background-color: green;"></div>
-          <div class="control_color" style="background-color: blue;"></div>
-          <div class="control_color" style="background-color: navy;"></div>
-          <div class="control_color" style="background-color: purple;"></div>
-          <div class="control_color" style="background-color: violet;"></div>
+      <div class="controls__colors" id="jsColors">
+        <div class="control_color" style="background-color: black;"></div>
+        <div class="control_color" style="background-color: white;"></div>
+        <div class="control_color" style="background-color: red;"></div>
+        <div class="control_color" style="background-color: orange;"></div>
+        <div class="control_color" style="background-color: yellow;"></div>
+        <div class="control_color" style="background-color: green;"></div>
+        <div class="control_color" style="background-color: blue;"></div>
+        <div class="control_color" style="background-color: navy;"></div>
+        <div class="control_color" style="background-color: purple;"></div>
+        <div class="control_color" style="background-color: violet;"></div>
 
-          <input class="color__picker" type="color" id="colorPicker" value="#008000">
-        </div>
+        <input class="color__picker" type="color" id="colorPicker" value="#008000">
       </div>
 
       <div class="controls__brush">
@@ -173,139 +172,6 @@
     <div id="posts"></div>
   </aside>
 </section>
-  <script>
-    const canvas = document.getElementById('jsCanvas')
-    const brush = canvas.getContext("2d");
-
-    function resizeCanvas() {
-      const rect = canvas.getBoundingClientRect();
-
-      canvas.width = rect.width;
-      canvas.height = rect.height;
-    }
-
-    resizeCanvas();
-
-    let lastX =0;
-    let lastY =0;
-
-    brush.lineWidth = "5";
-    brush.strokeStyle = "green";
-    brush.lineCap = "round";
-
-    let painting = false;
-
-    function getCanvasPosition(event){
-      const rect = canvas.getBoundingClientRect();
-      const x = canvas.width/rect.width;
-      const y = canvas.height/rect.height;
-      
-      return{
-        x: (event.clientX - rect.left) * x,
-        y: (event.clientY - rect.top) * y
-      };
-    }
-
-    function startBrush(event){
-      painting = true;
-
-      const pos = getCanvasPosition(event);
-      
-      lastX = pos.x;
-      lastY = pos.y;
-
-      brush.beginPath();
-      brush.moveTo(lastX, lastY);
-    }
-
-    function stopPainting() {
-      if(!painting) return;
-
-      painting = false;
-      brush.closePath();
-    }
-
-    function draw(event) {
-      if (!painting) return;
-
-      if (currentTool === "pen") {
-        brush.globalAlpha = 1;
-        brush.lineWidth = currentBrushSize;
-        brush.lineCap = "round";
-        brush.globalCompositeOperation = "source-over";
-      }
-
-      if (currentTool === "pencil") {
-        brush.globalAlpha = 0.4;
-        brush.lineWidth = currentBrushSize;
-        brush.lineCap = "round";
-        brush.globalCompositeOperation = "source-over";
-      }
-
-      if (currentTool === "brush") {
-        brush.globalAlpha = 0.25;
-        brush.lineWidth = currentBrushSize;
-        brush.lineCap = "round";
-        brush.globalCompositeOperation = "source-over";
-      }
-
-      if(currentTool === "eraser"){
-        brush.globalAlpha = 1;
-        brush.lineWidth = currentBrushSize;
-        brush.globalCompositeOperation = "destination-out";
-      }
-
-      const midX = (lastX + pos.x) / 2;
-      const midY = (lastY + pos.y) / 2;
-
-      brush.quadraticCurveTo(lastX, lastY, midX, midY);
-      brush.stroke();
-
-      lastX = pos.x;
-      lastY = pos.y;
-    }
-
-    canvas.addEventListener("pointerdown", startBrush);
-    canvas.addEventListener("pointerup", stopPainting);
-    canvas.addEventListener("pointerleave", stopPainting);
-    canvas.addEventListener("pointermove", draw);
-    canvas.addEventListener("pointercancel", stopPainting);
-  </script>
-
-  <script>
-    //change color
-    const colors = document.querySelectorAll(".control_color");
-    const colorPicker = document.getElementById("colorPicker");
-
-    function changeColor(event){
-      const selected = event.target.style.backgroundColor;
-      brush.strokeStyle = selected;
-    }
-
-    colors.forEach(color =>{
-      color.addEventListener("click", changeColor);
-    });
-
-    colorPicker.addEventListener("input", function(event){
-      brush.strokeStyle = event.target.value;
-    });
-
-    //change brush
-    let currentTool = "pen";
-    let currentBrushSize = 5;
-
-    const brushStyle = document.getElementById("brushStyle");
-    const brushSize = document.getElementById("brushSize");
-
-    brushStyle.addEventListener("change", function(event) {
-      currentTool = event.target.value;
-    });
-
-    brushSize.addEventListener("input", function(event){
-      currentBrushSize = Number(event.target.value);
-    })
-
-  </script>
 
   <!-- Visitor Graph
   해야 하는거: 만약 버튼을 눌렀을시 유지되게 하는거 
@@ -324,11 +190,16 @@
     <div class="visitor-chart-box">
       <canvas id="visitorChart"></canvas>
     </div>
+
+    <div class = "note">
+      <p>Note: Refreshing the page too quickly may block visit count increases and log security events.</p>
+    </div>
   </div>
 </div>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
-
-  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<!-- Referring to the security logs -->
+<a href="./security.html">Security Events</a>
 
   <!-- FOOTER / CONTACT -->
   <footer>
