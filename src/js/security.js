@@ -1,5 +1,6 @@
 import {
   db,
+  doc,
   collection,
   addDoc,
   onSnapshot,
@@ -7,7 +8,10 @@ import {
   query,
   orderBy,
   limit,
+  deleteDoc,
 } from "./firebase.js";
+
+  console.log("Check if it works");
 
 function getSessionId() {
   let sessionID = localStorage.getItem("profile_session_id");
@@ -18,6 +22,30 @@ function getSessionId() {
   }
 
   return sessionID;
+}
+
+// 이거 정리 필요: 객체의 필드 이름 검사해서 admin 관련 필드가 있으면 true 반환, 없으면 false 반환
+export async function hasBlockedAdminField(data) {
+  const BLOCKED_ADMIN_FIELDS = ["role", "isAdmin", "admin"];
+  const keys = Object.keys(data);
+  const blockedField = keys.find(function (key) {
+    return BLOCKED_ADMIN_FIELDS.includes(key);
+  });
+
+  if (blockedField) {
+    await logSecurityEvent(
+      "ADMIN_FIELD_BLOCK",
+      "high",
+      "Blocked write attempt containing admin-related field.",
+      {
+        blockedField: blockedField,
+        attemptedKeys: keys,
+      }
+    );
+    return true;
+  }
+
+  return false;
 }
 
 export async function logSecurityEvent(type, severity, message, detail = {}) {
@@ -67,6 +95,7 @@ export function showSecurityEvents() {
       }
 
       snapshot.forEach(function (firebaseDoc) {
+        const logId = firebaseDoc.id;
         const data = firebaseDoc.data();
 
         const card = document.createElement("div");
@@ -105,10 +134,46 @@ export function showSecurityEvents() {
           date.textContent = "Logging...";
         }
 
+        const deleteButton = document.createElement("button");
+        deleteButton.textContent = "Delete";
+
+        const buttonBox = document.createElement("div");
+        buttonBox.classList.add("button-box");
+
+        deleteButton.addEventListener("click", async function () {
+          const confirmDelete = confirm("Delete this log?");
+          if (!confirmDelete) return;
+
+          try {
+            await deleteDoc(doc(db, "securityLogs", logId));
+          } catch (error) {
+            console.error("Delete failed:", error);
+            alert(error.message);
+
+            try {
+              await logSecurityEvent(
+                "Delete log failed",
+                "medium",
+                "Failed to delete a security log entry.",
+                {
+                  logId: logId,
+                  errorCode: error.code,
+                  errorMessage: error.message,
+                }
+              );
+            } catch (logError) {
+              console.error("Failed to write security event:", logError);
+            }
+          }
+        });
+
         card.appendChild(header);
         card.appendChild(message);
         card.appendChild(session);
         card.appendChild(date);
+
+        buttonBox.appendChild(deleteButton);
+        card.appendChild(buttonBox);
 
         securityEvents.appendChild(card);
       });

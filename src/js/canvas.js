@@ -10,6 +10,8 @@ import {
   updateDoc,
   deleteDoc,
 } from "./firebase.js";
+import { logSecurityEvent } from "./security.js";
+import { hasBlockedAdminField } from "./security.js";
 
 export function setupCanvasBoard() {
   const canvas = document.getElementById("jsCanvas");
@@ -33,6 +35,9 @@ export function setupCanvasBoard() {
   let currentTool = "pen";
   let currentBrushSize = 5;
   let editingPostId = null;
+
+  // For limiting the size of the canvas data
+  const MAX_CANVAS_DATA_SIZE = 900000;
 
   canvas.style.touchAction = "none";
 
@@ -173,6 +178,7 @@ export function setupCanvasBoard() {
     });
   }
 
+
   async function createPost() {
     try {
       const memo = memoInput.value.trim();
@@ -184,23 +190,53 @@ export function setupCanvasBoard() {
 
       const imageData = canvas.toDataURL("image/png");
 
+      if (imageData.length > MAX_CANVAS_DATA_SIZE) {
+        await logSecurityEvent(
+          "Canvas data size exceeded",
+          "high",
+          "Blocked canvas upload because the image data was too large.",
+          { size: imageData.length, limit: MAX_CANVAS_DATA_SIZE }
+        );
+
+        alert("Canvas image is too large, so the save was blocked");
+        return;
+      }
+
       if (editingPostId) {
         const postRef = doc(db, "posts", editingPostId);
 
-        await updateDoc(postRef, {
-          memo,
+        const updateData = {
+          memo: memo,
           image: imageData,
           updatedAt: serverTimestamp(),
-        });
+        };
 
+        const blocked = await hasBlockedAdminField(updateData);
+        //console.log("blocked result:", blocked);
+
+        if (blocked) {
+          alert("Admin-related fields are not allowed.");
+          return;
+        }
+
+        await updateDoc(postRef, updateData);
         editingPostId = null;
         postButton.textContent = "Post";
       } else {
-        await addDoc(collection(db, "posts"), {
-          memo,
+        const postData = {
+          memo: memo,
           image: imageData,
           createdAt: serverTimestamp(),
-        });
+        };
+
+        const blocked = await hasBlockedAdminField(postData);
+
+        if(blocked){
+          alert("Admin-related fields are not allowed.");
+          return;
+        }
+
+        await addDoc(collection(db, "posts"), postData);
       }
 
       memoInput.value = "";
@@ -270,6 +306,12 @@ export function setupCanvasBoard() {
               } catch (error) {
                 console.error("Delete failed:", error);
                 alert(error.message);
+                await logSecurityEvent(
+                  "Delete post failed",
+                  "medium",
+                  "Failed to delete post.",
+                  { postId: postId }
+                );
               }
             }
           });
