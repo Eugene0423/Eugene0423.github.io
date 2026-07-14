@@ -24,24 +24,38 @@
       <img src="Eugene_logo.png" alt="Sally Shin" class="logo-img">
       <span>Sally/Eugene Shin</span>
     </div>
+    <nav class="index-nav">
+      <a href="#home">HOME</a>
 
-    <nav>
-      <a href="#home">Home</a>
-      <a href="#projects">Projects</a>
-      <a href="#Jinee">Jinee's Playground</a>
+      <div class="menu-dropdown" id="menuDropdown">
+        <a href="#" class="menu-link" id="menuButton">MENU</a>
+
+        <div class="dropdown-menu">
+          <a href="./playground.html">Jinee's Playground</a>
+          <a href="./security.html">Security Events</a>
+        </div>
+      </div>
+
       <a href="#contact">Contact</a>
     </nav>
   </header>
 
   <!-- Home -->
+  
   <section id="home" class="hero">
-    <div class="hero-shape"></div>
-    <div class="hero-tag">Hello World!</div>
-    <h1>Hello, I'm <br><em>Eugene</em></h1>
-    <p class="hero-sub">
-      I build simple and elegant web experiences. Focused on craft, warmth, and quiet detail.
-    </p>
-    <div class="hero-divider"></div>
+  <div class="hero-tag">Hello World!</div>
+
+  <h1>Hello, I'm <br><em>Eugene</em></h1>
+
+  <p class="hero-sub">
+    I build simple and elegant web experiences. Focused on craft, warmth, and quiet detail.
+  </p>
+
+  <div class="main-logo">
+    <img src="Eugene_logo.png" alt="Eugene logo" class="logo-main">
+  </div>
+
+  <div class="hero-divider"></div>
   </section>
 
   <!-- Bio -->
@@ -109,70 +123,6 @@
     </div>
   </section>
 
-  <!-- Memo Drawing Section 
-  해야 하는거: 캔버스 위에 올렸을때 브러쉬 사이즈에 맞게 아이콘 변경 
-  -->
-  <section class="memo-drawing-section">
-  <div class="section-label" id="Jinee">Jinee's Playground</div>
-
-  <div class="drawing-card">
-    <div class="drawing-header">
-      <p class="eyebrow">Interactive Board</p>
-      <h2>Leave a Drawing & Memo</h2>
-      <p class="drawing-description">
-        Draw something, write a short memo, and post it to the board.
-      </p>
-    </div>
-
-    <canvas id="jsCanvas" class="canvas"></canvas>
-
-    <div class="tool-card">
-      <div class="controls__colors" id="jsColors">
-        <div class="control_color" style="background-color: black;"></div>
-        <div class="control_color" style="background-color: white;"></div>
-        <div class="control_color" style="background-color: red;"></div>
-        <div class="control_color" style="background-color: orange;"></div>
-        <div class="control_color" style="background-color: yellow;"></div>
-        <div class="control_color" style="background-color: green;"></div>
-        <div class="control_color" style="background-color: blue;"></div>
-        <div class="control_color" style="background-color: navy;"></div>
-        <div class="control_color" style="background-color: purple;"></div>
-        <div class="control_color" style="background-color: violet;"></div>
-
-        <input class="color__picker" type="color" id="colorPicker" value="#008000">
-      </div>
-
-      <div class="controls__brush">
-        <label>
-          Brush size
-          <input type="range" id="brushSize" min="1" max="50" value="5">
-        </label>
-
-        <select id="brushStyle">
-          <option value="pen">Pen</option>
-          <option value="pencil">Pencil</option>
-          <option value="brush">Brush</option>
-          <option value="eraser">Eraser</option>
-        </select>
-      </div>
-    </div>
-
-    <div class="memo-compose">
-      <textarea id="memoInput" placeholder="Write your memo here..."></textarea>
-      <button id="postButton">Post</button>
-    </div>
-  </div>
-
-  <aside class="board-card">
-    <div class="board-header">
-      <p class="eyebrow">Community Notes</p>
-      <h2>Memo Board</h2>
-    </div>
-
-    <div id="posts"></div>
-  </aside>
-</section>
-
   <!-- Visitor Graph
   해야 하는거: 만약 버튼을 눌렀을시 유지되게 하는거 
   -->
@@ -199,7 +149,6 @@
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
 <!-- Referring to the security logs -->
-<a href="./security.html">Security Events</a>
 
   <!-- FOOTER / CONTACT -->
   <footer>

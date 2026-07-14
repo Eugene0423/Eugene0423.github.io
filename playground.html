@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="stylesheet" href="./playground.css" />
+  <title>Jinee's Playground</title>
+
+  <script
+    src="https://kit.fontawesome.com/YOUR_FONT_AWESOME_KEY.js"
+    crossorigin="anonymous"
+  ></script>
+
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;1,400&family=Jost:wght@300;400;500&display=swap" rel="stylesheet">
+
+</head>
+
+<body>
+<header class="playground-header">
+    <h1>Jinee's Playground</h1>
+
+    <nav class="playground-nav">
+      <a href="../index.html">HOME</a>
+      
+      <div class="menu-dropdown" id="menuDropdown">
+        <a href="#" class="menu-link" id="menuButton">MENU</a>
+
+        <div class="dropdown-menu">
+          <a href="./security.html">Security Events</a>
+        </div>
+      </div>
+    </nav>
+</header>
+
+<!-- Memo Drawing Section 
+  해야 하는거: 캔버스 위에 올렸을때 브러쉬 사이즈에 맞게 아이콘 변경 
+-->
+<section class="memo-drawing-section">
+
+  <div class="drawing-card">
+    <div class="drawing-header">
+      <p class="eyebrow">Interactive Board</p>
+      <h2>Leave a Drawing & Memo</h2>
+      <p class="drawing-description">
+        Draw something, write a short memo, and post it to the board.
+      </p>
+    </div>
+
+    <canvas id="jsCanvas" class="canvas"></canvas>
+
+    <div class="tool-card">
+      <div class="controls__colors" id="jsColors">
+        <div class="control_color" style="background-color: black;"></div>
+        <div class="control_color" style="background-color: white;"></div>
+        <div class="control_color" style="background-color: red;"></div>
+        <div class="control_color" style="background-color: orange;"></div>
+        <div class="control_color" style="background-color: yellow;"></div>
+        <div class="control_color" style="background-color: green;"></div>
+        <div class="control_color" style="background-color: blue;"></div>
+        <div class="control_color" style="background-color: navy;"></div>
+        <div class="control_color" style="background-color: purple;"></div>
+        <div class="control_color" style="background-color: violet;"></div>
+
+        <input class="color__picker" type="color" id="colorPicker" value="#008000">
+      </div>
+
+      <div class="controls__brush">
+        <label>
+          Brush size
+          <input type="range" id="brushSize" min="1" max="50" value="5">
+        </label>
+
+        <select id="brushStyle">
+          <option value="pen">Pen</option>
+          <option value="pencil">Pencil</option>
+          <option value="brush">Brush</option>
+          <option value="eraser">Eraser</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="memo-compose">
+      <textarea id="memoInput" placeholder="Write your memo here..."></textarea>
+      <button id="postButton">Post</button>
+    </div>
+  </div>
+
+  <aside class="board-card">
+    <div class="board-header">
+      <p class="eyebrow">Community Notes</p>
+      <h2>Memo Board</h2>
+    </div>
+
+    <div id="posts"></div>
+  </aside>
+    <script type="module" src="./src/playgroundEntry.js"></script>
+
+</section>
+</body>

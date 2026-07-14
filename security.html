@@ -1,14 +1,134 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <title>Security Logs</title>
-  </head>
-  <body>
-    <h1>Security Logs</h1>
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Security Log</title>
 
-    <div id="securityEvents"></div>
 
-    <script type="module" src="/src/securityEntry.js"></script>
-  </body>
+  <script
+    src="https://kit.fontawesome.com/YOUR_FONT_AWESOME_KEY.js"
+    crossorigin="anonymous"
+  ></script>
+
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;1,400&family=Jost:wght@300;400;500&display=swap" rel="stylesheet">
+
+</head>
+
+<body>
+  <header class="security-header">
+    <h1>Security Log</h1>
+
+    <nav class="security-nav">
+      <a href="../index.html">HOME</a>
+
+      <div class="menu-dropdown">
+        <a href="#" class="menu-link">MENU</a>
+
+        <div class="dropdown-menu">
+          <a href="../playground.html">Jinee's Playground</a>
+        </div>
+      </div>
+    </nav>
+  </header>
+
+  <main class="security-page">
+  <section class="main-window">
+
+  <section class="filter-panel">
+  <div class="filter-header">
+      <button class="filter-title" id="filterButton" type="button">
+        <img
+          src="filter_icon.png"
+          alt=""
+          class="filter-icon"
+        />
+        <span>Filter</span>
+      </button>
+
+      <div class="pagination-inline" id="paginationControls">
+        <button type="button" id="prevPageButton">
+          <img src="next_icon.png"
+          alt=""
+          class="pagination-icon-prev"
+          />
+        </button>
+        <span id="pageInfo">Page 1 of 1</span>
+        <button type="button" id="nextPageButton">
+          <img src="next_icon.png"
+          alt=""
+          class="pagination-icon-next"
+          /></button>
+      </div>
+  </div>
+
+  <div class="filter-menu" id="filterMenu">
+    <div class="filter-group">
+      <p class="filter-label">Filter By</p>
+
+      <button type="button" class="filter-choice active" data-group="sortBy" data-value="date">
+        <span class="checkmark">✓</span>
+        <span>Date</span>
+      </button>
+
+      <button type="button" class="filter-choice" data-group="sortBy" data-value="severity">
+        <span class="checkmark">✓</span>
+        <span>Severity</span>
+      </button>
+
+      <button type="button" class="filter-choice" data-group="sortBy" data-value="alphabet">
+        <span class="checkmark">✓</span>
+        <span>Alphabet</span>
+      </button>
+    </div>
+
+    <div class="filter-divider"></div>
+
+    <div class="filter-group">
+      <p class="filter-label">Show up to</p>
+
+      <button type="button" class="filter-choice" data-group="limit" data-value="5">
+        <span class="checkmark">✓</span>
+        <span>5 items</span>
+      </button>
+
+      <button type="button" class="filter-choice active" data-group="limit" data-value="10">
+        <span class="checkmark">✓</span>
+        <span>10 items</span>
+      </button>
+
+      <button type="button" class="filter-choice" data-group="limit" data-value="15">
+        <span class="checkmark">✓</span>
+        <span>15 items</span>
+      </button>
+    </div>
+
+    <div class="filter-divider"></div>
+
+    <div class="filter-group">
+      <button type="button" class="filter-choice active" data-group="order" data-value="ascending">
+        <span class="checkmark">✓</span>
+        <span>Ascending</span>
+      </button>
+
+      <button type="button" class="filter-choice" data-group="order" data-value="descending">
+        <span class="checkmark">✓</span>
+        <span>Descending</span>
+      </button>
+    </div>
+  </div>
+</section>
+
+    <section class="log-list" id="securityEvents">
+        <div class="log-row"></div>
+      </section>
+
+    </section>
+  </main>
+
+  <script type="module" src="./src/securityEntry.js"></script>
+</body>
 </html>

@@ -1,0 +1,468 @@
+@import url("https://fonts.googleapis.com/css2?family=Share+Tech+Mono&display=swap");
+
+:root {
+  --bg: #faf9f7;
+  --header: #c9b9a5;
+  --panel: #aa9683;
+  --line: #d7c6b4;
+  --text: #ffffff;
+  --dark-text: #5c5148;
+  
+  --font-heading: "Cormorant Garamond", serif;
+  --font-body: "Jost", system-ui, sans-serif;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  background: var(--bg);
+  font-family: var(--font-body);
+}
+
+/* Top Header */
+.security-header {
+  width: 100%;
+  height: 115px;
+  background: var(--header);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 38px;
+}
+
+.security-header h1 {
+  margin: 0;
+  color: var(--text);
+  font-size: 46px;
+  letter-spacing: 2px;
+  font-weight: 700;
+}
+
+.security-nav {
+  display: flex;
+  gap: 38px;
+  margin-top: 12px;
+}
+
+.security-nav a {
+  position: relative;
+  color: var(--text);
+  text-decoration: none;
+  font-size: 30px;
+  letter-spacing: 1px;
+  padding-bottom: 2px;
+}
+
+.security-nav a::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: 0;
+
+  width: 100%;
+  height: 2px;
+  background: var(--text);
+
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 0.3s ease;
+}
+
+.security-nav a:hover::after {
+  transform: scaleX(1);
+}
+
+/* Page Layout */
+.security-page {
+  width: 100%;
+  min-height: calc(100vh - 115px);
+  padding: 27px 28px;
+}
+
+/* Main white window */
+.main-window {
+  width: 100%;
+  min-height: 720px;
+  background: #ffffff;
+  border: 1.5px solid var(--line);
+  border-radius: 24px;
+  overflow: hidden;
+}
+
+/* Filter panel */
+.filter-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  width: 100%;
+  min-height: 110px;
+  padding: 0 28px 0 42px;
+
+  background-color: #b3a08e;
+  box-sizing: border-box;
+}
+
+.filter-panel {
+  position: relative;
+  width: 100%;
+}
+
+.filter-title {
+  display: flex;
+  align-items: center;
+  gap: 18px;
+
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: #fff;
+
+  font-family: inherit;
+  font-size: 36px;
+  cursor: pointer;
+}
+
+.filter-icon {
+  width: 42px;
+  height: 42px;
+  object-fit: contain;
+  display: block;
+  filter: brightness(0) invert(1);
+}
+
+/* Pagination Input */
+.pagination-inline {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+
+  margin-left: auto;
+  color: #fff;
+  white-space: nowrap;
+}
+
+.pagination-inline button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  padding: 0;
+  border: none;
+  background: transparent;
+
+  cursor: pointer;
+}
+
+.pagination-icon-prev {
+  display: block;
+  width: 16px;
+  height: 16px;
+  object-fit: contain;
+  filter: brightness(0) invert(1);
+  transform: scaleX(-1);
+}
+
+
+.pagination-icon-next {
+  display: block;
+  width: 16px;
+  height: 16px;
+  object-fit: contain;
+  filter: brightness(0) invert(1);
+}
+
+/* dropdown menu box */
+.filter-menu {
+  position: absolute;
+  top: 50px;
+  left: 22px;
+
+  width: 250px;
+  background: #ffffff;
+  border: 1.5px solid var(--line);
+  border-radius: 16px 16px 16px 16px;
+
+  z-index: 1000;
+  overflow: hidden;
+
+  opacity: 0;
+  transform: translateY(-8px);
+  pointer-events: none;
+
+  transition:
+    opacity 0.25s ease,
+    transform 0.25s ease;
+}
+
+/* filter menu open */
+.filter-panel.open .filter-menu {
+  opacity: 1;
+  transform: translateY(0);
+  pointer-events: auto;
+}
+
+.filter-group {
+  padding: 18px 22px;
+}
+
+.filter-label {
+  margin: 0 0 10px 0;
+  font-size: 18px;
+  color: #111111;
+}
+
+/* each option */
+.filter-choice {
+  width: 100%;
+  border: none;
+  background: transparent;
+
+  display: flex;
+  align-items: center;
+  gap: 14px;
+
+  padding: 3px 0;
+
+  font-family: inherit;
+  font-size: 17px;
+  color: #111111;
+  text-align: left;
+
+  cursor: pointer;
+}
+
+.filter-choice:hover {
+  color: #8f7d6d;
+}
+
+.checkmark {
+  width: 17px;
+  display: inline-block;
+  font-size: 17px;
+  opacity: 0;
+}
+
+/* active일 때만 체크 보임 */
+.filter-choice.active .checkmark {
+  opacity: 1;
+}
+
+.filter-divider {
+  width: 100%;
+  height: 1px;
+  background: #d7c6b4;
+}
+
+/* Log rows */
+.log-list {
+  width: 100%;
+}
+
+.log-row {
+  height: 86px;
+  border-bottom: 1.5px solid var(--line);
+  background: #ffffff;
+}
+
+.log-row:last-child {
+  border-bottom: none;
+}
+
+/*
+Security Events
+security.html - page design
+*/
+
+.security-page{
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 80px 24px;
+}
+
+.security-section {
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 80px 24px;
+  box-sizing: border-box;
+}
+
+.security-section h2 {
+  margin-bottom: 8px;
+}
+
+.security-description {
+  color: var(--text-soft);
+  margin-bottom: 24px;
+}
+
+.security-events {
+  display: grid;
+  gap: 16px;
+}
+
+.security-card {
+  background: var(--card);
+  border: 1px solid var(--line);
+  padding: 18px;
+  box-sizing: border-box;
+}
+
+.security-card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+}
+
+.security-type {
+  font-weight: 700;
+  font-size: 0.95rem;
+}
+
+.security-severity {
+  font-size: 0.75rem;
+  padding: 4px 10px;
+  border-radius: 999px;
+  border: 1px solid var(--line);
+  text-transform: uppercase;
+}
+
+.security-message {
+  margin: 10px 0;
+  color: var(--text);
+}
+
+.security-meta {
+  display: block;
+  color: var(--text-soft);
+  font-size: 0.8rem;
+  margin-top: 6px;
+}
+
+.security-card.high {
+  border-color: #ff6b6b;
+}
+
+.security-card.medium {
+  border-color: #f59f00;
+}
+
+.security-card.low {
+  border-color: #74c0fc;
+}
+
+.empty-security-message {
+  color: var(--text-soft);
+}
+
+.menu-dropdown {
+  position: relative;
+  display: inline-block;
+}
+
+/* dropdown box */
+.dropdown-menu {
+  position: absolute;
+  top: 100%;
+  right: 0;
+
+  min-width: 260px;
+  background: rgba(255, 255, 255, 0.94);
+  border: 1px solid rgba(201, 185, 165, 0.6);
+  border-radius: 18px;
+  padding: 12px 0;
+
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+
+  opacity: 0;
+  transform: translateY(-10px);
+  pointer-events: none;
+
+  transition: opacity 0.3s ease, transform 0.3s ease;
+  z-index: 999;
+  box-shadow: 0 12px 28px rgba(92, 81, 72, 0.16);
+}
+
+/* menu hover 하면 dropdown 열림 */
+.menu-dropdown:hover .dropdown-menu {
+  opacity: 1;
+  transform: translateY(0);
+  pointer-events: auto;
+}
+
+/* dropdown item */
+.dropdown-menu a {
+  position: relative;
+  overflow: hidden;
+
+  color: #8f7d6d;
+  font-size: 18px;
+  text-decoration: none;
+  letter-spacing: 0.5px;
+
+  padding: 13px 20px;
+  opacity: 0;
+  transform: translateX(-12px);
+
+  transition:
+    opacity 0.35s ease,
+    transform 0.35s ease,
+    color 0.25s ease;
+}
+
+/* 기존 nav underline이 dropdown 안에 생기지 않게 */
+.dropdown-menu a::after {
+  display: none;
+}
+
+/* 첫 번째 메뉴 먼저 등장 */
+.menu-dropdown:hover .dropdown-menu a:nth-child(1) {
+  opacity: 1;
+  transform: translateX(0);
+  transition-delay: 0.08s;
+}
+
+/* 두 번째 메뉴는 조금 늦게 등장 */
+.menu-dropdown:hover .dropdown-menu a:nth-child(2) {
+  opacity: 1;
+  transform: translateX(0);
+  transition-delay: 0.22s;
+}
+
+/* security log에 gradient 느낌 */
+.dropdown-menu a:nth-child(2) {
+  background: linear-gradient(
+    90deg,
+    rgba(201, 185, 165, 0.12),
+    rgba(170, 150, 131, 0.28),
+    rgba(201, 185, 165, 0.12)
+  );
+  background-size: 200% 100%;
+}
+
+/* hover 시 그라데이션 이동 */
+.menu-dropdown:hover .dropdown-menu a:nth-child(2) {
+  animation: securityGradient 1.2s ease forwards;
+}
+
+.dropdown-menu a:hover {
+  background-color: rgba(201, 185, 165, 0.18);
+  color: #6d5f53;
+}
+
+@keyframes securityGradient {
+  from {
+    background-position: 100% 0;
+  }
+
+  to {
+    background-position: 0 0;
+  }
+}
