@@ -1,6 +1,7 @@
 import "./style.css";
 
 import { initVisitorGraph } from "./js/visitor.js";
+import { setupAdminLogin, setupAdminLogout } from "./js/auth.js";
 
 initVisitorGraph();
 
@@ -23,3 +24,6 @@ document.addEventListener("DOMContentLoaded", function () {
     });
   }
 });
+
+setupAdminLogin();
+setupAdminLogout();

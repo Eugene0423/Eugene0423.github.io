@@ -9,14 +9,13 @@ import {
   "https://www.gstatic.com/firebasejs/12.15.0/firebase-auth.js";
 
 const googleProvider = new GoogleAuthProvider();
+const adminLoginButton = document.getElementById("adminLoginButton");
+const adminLogoutButton = document.getElementById("adminLogoutButton");
 
-const adminLoginButton =
-  document.getElementById("adminLoginButton");
+export function setupAdminLogin() {
+  if (!adminLoginButton) return;
 
-const adminLogoutButton =
-  document.getElementById("adminLogoutButton");
-
-adminLoginButton?.addEventListener("click", async () => {
+  adminLoginButton?.addEventListener("click", async () => {
   try {
     const result = await signInWithPopup(
       auth,
@@ -34,8 +33,12 @@ adminLoginButton?.addEventListener("click", async () => {
     );
   }
 });
+}
 
-adminLogoutButton?.addEventListener("click", async () => {
+export function setupAdminLogout() {
+  if (!adminLoginButton) return;
+
+  adminLogoutButton?.addEventListener("click", async () => {
   try {
     await signOut(auth);
     console.log("로그아웃됨");
@@ -43,6 +46,7 @@ adminLogoutButton?.addEventListener("click", async () => {
     console.error("로그아웃 실패:", error);
   }
 });
+}
 
 onAuthStateChanged(auth, (user) => {
   const isLoggedIn = Boolean(user);
