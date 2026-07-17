@@ -1,32 +1,15 @@
-import {
-  db,
-  collection,
-  addDoc,
-  onSnapshot,
-  serverTimestamp,
-  query,
-  orderBy,
-  doc,
-  updateDoc,
-  deleteDoc,
-} from "./firebase.js";
-import { logSecurityEvent } from "./security.js";
-import { hasBlockedAdminField } from "./security.js";
-
 export function setupCanvasBoard() {
   const canvas = document.getElementById("jsCanvas");
   const memoInput = document.getElementById("memoInput");
-  const postButton = document.getElementById("postButton");
-  const posts = document.getElementById("posts");
 
   const colors = document.querySelectorAll(".control_color");
   const colorPicker = document.getElementById("colorPicker");
   const brushStyle = document.getElementById("brushStyle");
   const brushSize = document.getElementById("brushSize");
 
-  if (!canvas || !memoInput || !postButton || !posts) {
+  if (!canvas || !memoInput) {
     console.warn("Canvas board elements not found.");
-    return;
+    return null;
   }
 
   const brush = canvas.getContext("2d");
@@ -34,9 +17,7 @@ export function setupCanvasBoard() {
   let painting = false;
   let currentTool = "pen";
   let currentBrushSize = 5;
-  let editingPostId = null;
 
-  // For limiting the size of the canvas data
   const MAX_CANVAS_DATA_SIZE = 900000;
 
   canvas.style.touchAction = "none";
@@ -53,9 +34,11 @@ export function setupCanvasBoard() {
     brush.lineCap = "round";
 
     const img = new Image();
+
     img.onload = function () {
       brush.drawImage(img, 0, 0, canvas.width, canvas.height);
     };
+
     img.src = oldImage;
   }
 
@@ -121,8 +104,8 @@ export function setupCanvasBoard() {
     if (event && canvas.releasePointerCapture) {
       try {
         canvas.releasePointerCapture(event.pointerId);
-      } catch (error) {
-        // ignore release errors
+      } catch {
+        // Pointer capture가 이미 해제된 경우 무시
       }
     }
   }
@@ -145,7 +128,12 @@ export function setupCanvasBoard() {
     img.src = imageSrc;
   }
 
+  function getCanvasImage() {
+    return canvas.toDataURL("image/png");
+  }
+
   resizeCanvas();
+
   window.addEventListener("resize", resizeCanvas);
 
   canvas.addEventListener("pointerdown", startBrush);
@@ -160,181 +148,24 @@ export function setupCanvasBoard() {
     });
   });
 
-  if (colorPicker) {
-    colorPicker.addEventListener("input", function (event) {
-      brush.strokeStyle = event.target.value;
-    });
-  }
+  colorPicker?.addEventListener("input", function (event) {
+    brush.strokeStyle = event.target.value;
+  });
 
-  if (brushStyle) {
-    brushStyle.addEventListener("change", function (event) {
-      currentTool = event.target.value;
-    });
-  }
+  brushStyle?.addEventListener("change", function (event) {
+    currentTool = event.target.value;
+  });
 
-  if (brushSize) {
-    brushSize.addEventListener("input", function (event) {
-      currentBrushSize = Number(event.target.value);
-    });
-  }
+  brushSize?.addEventListener("input", function (event) {
+    currentBrushSize = Number(event.target.value);
+  });
 
-
-  async function createPost() {
-    try {
-      const memo = memoInput.value.trim();
-
-      if (memo === "") {
-        alert("Please write a memo first.");
-        return;
-      }
-
-      const imageData = canvas.toDataURL("image/png");
-
-      if (imageData.length > MAX_CANVAS_DATA_SIZE) {
-        await logSecurityEvent(
-          "Canvas data size exceeded",
-          "high",
-          "Blocked canvas upload because the image data was too large.",
-          { size: imageData.length, limit: MAX_CANVAS_DATA_SIZE }
-        );
-
-        alert("Canvas image is too large, so the save was blocked");
-        return;
-      }
-
-      if (editingPostId) {
-        const postRef = doc(db, "posts", editingPostId);
-
-        const updateData = {
-          memo: memo,
-          image: imageData,
-          updatedAt: serverTimestamp(),
-        };
-
-        const blocked = await hasBlockedAdminField(updateData);
-        //console.log("blocked result:", blocked);
-
-        if (blocked) {
-          alert("Admin-related fields are not allowed.");
-          return;
-        }
-
-        await updateDoc(postRef, updateData);
-        editingPostId = null;
-        postButton.textContent = "Post";
-      } else {
-        const postData = {
-          memo: memo,
-          image: imageData,
-          createdAt: serverTimestamp(),
-        };
-
-        const blocked = await hasBlockedAdminField(postData);
-
-        if(blocked){
-          alert("Admin-related fields are not allowed.");
-          return;
-        }
-
-        await addDoc(collection(db, "posts"), postData);
-      }
-
-      memoInput.value = "";
-      clearCanvas();
-    } catch (error) {
-      console.error("Post failed:", error);
-      alert(error.message);
-    }
-  }
-
-  function showPosts() {
-    const postsQuery = query(
-      collection(db, "posts"),
-      orderBy("createdAt", "desc")
-    );
-
-    onSnapshot(
-      postsQuery,
-      function (snapshot) {
-        posts.innerHTML = "";
-
-        snapshot.forEach(function (firebaseDoc) {
-          const data = firebaseDoc.data();
-          const postId = firebaseDoc.id;
-
-          const post = document.createElement("div");
-          post.className = "post";
-
-          const img = document.createElement("img");
-          img.src = data.image;
-
-          const memo = document.createElement("p");
-          memo.textContent = data.memo;
-
-          const date = document.createElement("small");
-          date.textContent = data.createdAt
-            ? data.createdAt.toDate().toLocaleString()
-            : "Posting...";
-
-          const buttonBox = document.createElement("div");
-          buttonBox.className = "post-buttons";
-
-          const editButton = document.createElement("button");
-          editButton.textContent = "Edit";
-
-          editButton.addEventListener("click", function () {
-            editingPostId = postId;
-            memoInput.value = data.memo;
-            postButton.textContent = "Update";
-            loadImageToCanvas(data.image);
-
-            window.scrollTo({
-              top: canvas.offsetTop - 100,
-              behavior: "smooth",
-            });
-          });
-
-          const deleteButton = document.createElement("button");
-          deleteButton.textContent = "Delete";
-
-          deleteButton.addEventListener("click", async function () {
-            const confirmDelete = confirm("Delete this post?");
-
-            if (confirmDelete) {
-              try {
-                await deleteDoc(doc(db, "posts", postId));
-              } catch (error) {
-                console.error("Delete failed:", error);
-                alert(error.message);
-                await logSecurityEvent(
-                  "Delete post failed",
-                  "medium",
-                  "Failed to delete post.",
-                  { postId: postId }
-                );
-              }
-            }
-          });
-
-          buttonBox.appendChild(editButton);
-          buttonBox.appendChild(deleteButton);
-
-          post.appendChild(img);
-          post.appendChild(memo);
-          post.appendChild(date);
-          post.appendChild(buttonBox);
-
-          posts.appendChild(post);
-        });
-      },
-      function (error) {
-        console.error("Realtime listener failed:", error);
-        alert(error.message);
-      }
-    );
-  }
-
-  postButton.addEventListener("click", createPost);
-
-  showPosts();
+  return {
+    canvas,
+    memoInput,
+    loadImageToCanvas,
+    getCanvasImage,
+    clearCanvas,
+    MAX_CANVAS_DATA_SIZE,
+  };
 }

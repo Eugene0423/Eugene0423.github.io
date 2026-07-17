@@ -2,5 +2,10 @@
 
 import "./playground.css";
 import { setupCanvasBoard } from "./js/canvas.js";
+import { setupPosts } from "./js/posts.js";
 
-setupCanvasBoard();
+const canvasBoard = setupCanvasBoard();
+
+if (canvasBoard) {
+  setupPosts(canvasBoard);
+}

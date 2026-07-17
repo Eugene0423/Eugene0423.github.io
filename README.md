@@ -7,6 +7,8 @@
 
 It also have a small playground where you can leave notes or draw pictures!
 
+(Updated) I added a security log to monitor any severe issue happening. Currently, it records issues such as delete/edit failure, admin field block, and multiple visiting.
+
 ---
 
 # 🚀 Features
@@ -14,6 +16,7 @@ It also have a small playground where you can leave notes or draw pictures!
 2. Profile
 3. Dashboard
 4. Playground
+5. Security Logs
 
 ---
 🙌 Note: Continuing updating:) Thanks for the patient!

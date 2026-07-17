@@ -13,13 +13,14 @@ import {
 
 let securityLogs = [];
 
+// base filter state
 const filterState = {
   sortBy: "date",
-  limit: 10, // 한 페이지에 표시할 카드 수
+  limit: 10,
   order: "ascending",
 };
 
-// Pagination 상태
+// Pagination - page 1 of 2
 let currentPage = 1;
 let totalPages = 1;
 
@@ -28,7 +29,7 @@ const prevPageButton = document.getElementById("prevPageButton");
 const nextPageButton = document.getElementById("nextPageButton");
 const pageInfo = document.getElementById("pageInfo");
 
-// Filter panel
+// Filter panel -------------------------------------------------
 const filterPanel = document.querySelector(".filter-panel");
 const filterButton = document.getElementById("filterButton");
 
@@ -39,7 +40,7 @@ if (filterPanel && filterButton) {
   });
 }
 
-// Session ID 가져오기
+// Session ID
 function getSessionId() {
   let sessionID = localStorage.getItem("profile_session_id");
 
@@ -51,7 +52,7 @@ function getSessionId() {
   return sessionID;
 }
 
-// Filter 선택 버튼
+// select filter
 const filterChoices = document.querySelectorAll(".filter-choice");
 
 if (filterChoices.length > 0) {
@@ -211,7 +212,7 @@ function updatePagination(totalLogs) {
   }
 }
 
-// Admin 관련 필드 검사
+// Admin 관련 필드 검사 ---------------------------------------
 export async function hasBlockedAdminField(data) {
   const BLOCKED_ADMIN_FIELDS = ["role", "isAdmin", "admin"];
   const keys = Object.keys(data);
@@ -237,7 +238,7 @@ export async function hasBlockedAdminField(data) {
   return false;
 }
 
-// Security event 저장
+// Security event ======================================================
 export async function logSecurityEvent(
   type,
   severity,
@@ -264,6 +265,7 @@ export async function logSecurityEvent(
 
 // Firestore securityLogs 실시간 불러오기
 export function showSecurityEvents() {
+  console.count("showSecurityEvents listener created");
   const securityEvents = document.getElementById("securityEvents");
 
   if (!securityEvents) {
@@ -290,7 +292,6 @@ export function showSecurityEvents() {
         });
       });
 
-      // Firestore 데이터를 받은 뒤 필터와 pagination 적용
       applySecurityFilter();
     },
 
@@ -380,14 +381,13 @@ function renderSecurityLogs(logs) {
           await deleteDoc(
             doc(db, "securityLogs", logId)
           );
-
-          /*
-            삭제 후 onSnapshot이 자동으로 다시 실행되므로
-            여기에서 renderSecurityLogs를 다시 호출할 필요 없음
-          */
         } catch (error) {
           console.error("Delete failed:", error);
-          alert(error.message);
+          if (error.message==="Missing or insufficient permissions."){
+            alert("Only Admin is allowed to delete.");
+          } else{
+            alert(error.message)
+          }
 
           try {
             await logSecurityEvent(

@@ -114,6 +114,11 @@ header {
   border-radius: 50%;
 }
 
+.invisible-button {
+  background: transparent;
+  border: none;
+}
+
 
 nav {
   display: flex;
@@ -210,6 +215,7 @@ nav a:hover {
 
 /* HOME, MENU, Contact 기본 스타일 */
 .index-nav > a,
+
 .menu-link {
   position: relative;
   text-decoration: none;
