@@ -53,3 +53,8 @@ node.js부분은 일단은 무시해도 될거 같긴 하던데
 
 7/17 - transparent admin login
 admin 로그인은 조금 신중하게 다루어야 할 거 같아서 logo쪽에 숨김
+파일 정리 - auth.js, posts.js부분을 나누어서 각자의 역할을 나눔
+firestore emulator을 통한 로그아웃 이용자 삭제 차단과 관리자 UID 삭제 허용 자동 테스트 확인
+
+7/20 - test: rules_version
+firestore emulatro을 통한 일반 사용자 권한 접속 실페의 자동 테스트 확인

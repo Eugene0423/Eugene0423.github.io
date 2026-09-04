@@ -1,0 +1,145 @@
+rules_version = '2';
+
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+		function isAdmin() {
+  		return request.auth != null
+    		&& request.auth.uid == "WXFlUlg1GgeUAMOCxVofg2tcbiE3";
+		}
+    
+    function blockedAdminFields() {
+      return [
+        "role",
+        "admin",
+        "isAdmin",
+        "permissions",
+        "claims"
+      ];
+    }
+
+    function hasBlockedAdminFieldOnCreate() {
+      return request.resource.data.keys().hasAny(blockedAdminFields());
+    }
+
+    function hasBlockedAdminFieldOnUpdate() {
+      return request.resource.data.diff(resource.data)
+        .affectedKeys()
+        .hasAny(blockedAdminFields());
+    }
+
+    function validSeverity() {
+      return request.resource.data.severity in ["low", "medium", "high"];
+    }
+
+    match /visits/{date} {
+      allow read: if true;
+
+      allow create: if request.resource.data.keys().hasOnly([
+        "date",
+        "count",
+        "updatedAt"
+      ])
+      && request.resource.data.date == date
+      && request.resource.data.count == 1
+      && !hasBlockedAdminFieldOnCreate();
+
+      allow update: if request.resource.data.keys().hasOnly([
+        "date",
+        "count",
+        "updatedAt"
+      ])
+      && request.resource.data.date == date
+      && request.resource.data.count >= resource.data.count
+      && !hasBlockedAdminFieldOnUpdate();
+
+      allow delete: if false;
+    }
+
+    match /visitorSessions/{sessionID} {
+      allow read: if true;
+
+      allow create: if request.resource.data.keys().hasOnly([
+        "sessionID",
+        "lastVisitAtMs",
+        "lastVisitAt",
+        "visitCount"
+      ])
+      && request.resource.data.sessionID == sessionID
+      && request.resource.data.visitCount == 1
+      && !hasBlockedAdminFieldOnCreate();
+
+      allow update: if request.resource.data.keys().hasOnly([
+        "sessionID",
+        "lastVisitAtMs",
+        "lastVisitAt",
+        "visitCount"
+      ])
+      && request.resource.data.sessionID == sessionID
+      && request.resource.data.visitCount >= resource.data.visitCount
+      && !hasBlockedAdminFieldOnUpdate();
+
+      allow delete: if false;
+    }
+
+    match /securityLogs/{logId} {
+      allow read: if true;
+
+      allow create: if request.resource.data.keys().hasOnly([
+        "type",
+        "severity",
+        "message",
+        "sessionID",
+        "detail",
+        "createdAt",
+        "path",
+        "userAgent"
+      ])
+      && validSeverity()
+      && !hasBlockedAdminFieldOnCreate();
+
+      allow update: if false;
+      allow delete: if isAdmin();
+    }
+
+    match /posts/{postId} {
+      allow read: if true;
+
+      allow create: if request.resource.data.keys().hasOnly([
+        "memo",
+        "image",
+        "createdAt",
+        "updatedAt"
+      ])
+      && request.resource.data.memo is string
+      && request.resource.data.image is string
+      && request.resource.data.memo.size() <= 1000
+      && request.resource.data.image.size() <= 500000
+      && !hasBlockedAdminFieldOnCreate();
+
+      allow update: if request.resource.data.keys().hasOnly([
+        "memo",
+        "image",
+        "createdAt",
+        "updatedAt"
+      ])
+      && request.resource.data.diff(resource.data)
+        .affectedKeys()
+        .hasOnly([
+          "memo",
+          "image",
+          "updatedAt"
+        ])
+      && request.resource.data.memo is string
+      && request.resource.data.image is string
+      && request.resource.data.memo.size() <= 1000
+      && request.resource.data.image.size() <= 500000
+      && !hasBlockedAdminFieldOnUpdate();
+
+      allow delete: if isAdmin();
+    }
+    match /{document=**} {
+      allow read, write: if false;
+    }
+  }
+}
